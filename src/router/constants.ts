@@ -7,6 +7,8 @@ export const HOME = {
 
   ABOUT: { name: '关于我', path: '/about' },
 
+  BLOG: { name: '博客文章', path: '/blog'},
+
   // HOME_INDEX: { name: '后台首页', path: '/home/index' },
 
   // REMINDER: { name: '提醒事项', path: '/home/reminder' },

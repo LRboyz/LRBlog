@@ -7,6 +7,7 @@ import { IRouteProps } from './types'
 import LayoutPage from '@/view/Layout'
 import aboutPage from '@/view/about'
 import personPage from '@/view/person'
+import blogPage from '@/view/blog'
 
 
 const routesMap: IRouteProps[] = [
@@ -34,6 +35,14 @@ const routesMap: IRouteProps[] = [
         exact: true,
         meta: {
           title: HOME.ABOUT.name
+        }
+      },
+      {
+        path: HOME.BLOG.path,
+        component: blogPage,
+        exact: true,
+        meta: {
+          title: HOME.BLOG.name
         }
       }
     ]
