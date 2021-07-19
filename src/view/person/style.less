@@ -1,31 +1,30 @@
 .person-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 960px;
+  min-height: calc(90vh - 180px);
+
+  .card {
     display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-content: center;
-    position: relative;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 960px;
-    min-height: calc(100vh - 180px);
+    height: 100%;
 
-    .card {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        height: 100%;
+    .avatar-box {
+      position: relative;
 
-        .avatar-box {
-            position: relative;
-
-            .face {
-                position: absolute;
-                top: 103px;
-                left: 57px;
-                width: 50px;
-                height: 5px;
-                background: rgb(26, 25, 25);
-            }
-        }
-
+      .face {
+        position: absolute;
+        top: 103px;
+        left: 57px;
+        width: 50px;
+        height: 5px;
+        background: rgb(26, 25, 25);
+      }
     }
+  }
 }

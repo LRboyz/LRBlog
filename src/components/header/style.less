@@ -1,6 +1,8 @@
 .main-header-box {
   position: relative;
   height: 64px;
+  z-index: 999;
+  background: rgba(255,255,255, 0.6);
   backdrop-filter: blur(5px);
 
   .header {
@@ -20,16 +22,18 @@
     transition: all 0.3s ease;
 
     .nav {
+      
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 16px;
+      margin-right: 20px;
       border: none;
       background: transparent;
     }
 
     .logo {
-      // font-family: ;
       margin-left: 20px;
       width: 150px;
       height: 40px;
-      // background-image: url('../../assets/image/common/logo.png');
       background-size: cover;
     }
 
@@ -45,11 +49,5 @@
         color: white;
       }
     }
-  }
-}
-
-@media (max-width: 960px) {
-  .nav {
-    display: none;
   }
 }

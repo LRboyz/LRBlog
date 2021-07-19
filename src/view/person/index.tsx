@@ -1,11 +1,11 @@
 import './style.less'
 import React from 'react'
 import avatar from '@/assets/image/common/avatar.png'
-import { Image } from 'antd';
+import { Image } from 'antd'
 
 const Person: React.FC = () => {
     return (
-        <section className="person-wrapper">
+        <div className="person-wrapper">
             <div className="card">
                 <div className="avatar-box">
                     <Image
@@ -21,7 +21,7 @@ const Person: React.FC = () => {
                 <p>😈 &nbsp; TypeScript / React / Python / Vue.js</p>
                 <p>🤓️ &nbsp; DongGuan / China</p>
             </div>
-        </section>
+        </div>
     )
 }
 

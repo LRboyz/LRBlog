@@ -1,36 +1,37 @@
-import React from "react";
-import "./list.less";
-import { Card, Tabs, List, Space, Button, Skeleton } from "antd";
+import React from "react"
+import "./list.less"
+import { Card, Tabs, List, Space, Button, Skeleton } from "antd"
 import {
   CommentOutlined,
   EyeOutlined,
   HistoryOutlined,
   LikeOutlined,
   NumberOutlined,
-} from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
-import { articleType } from "@/types/base";
-import { getArticleList } from "@/services/api/article";
-import { useRequest } from "ahooks";
+} from "@ant-design/icons"
+import { useHistory } from "react-router-dom"
+import { articleType } from "@/types/base"
+import { getArticleList } from "@/services/api/article"
+import { useRequest } from "ahooks"
+import formatTime from "@/utils/time"
 
 // export type articlePropsType = {
-//   list: articleType[];
-//   loading: boolean;
-//   fetchArticle: () => void;
-//   loadMore: () => void;
-//   loadingMore: boolean;
-//   isNext: boolean;
-// };
+//   list: articleType[]
+//   loading: boolean
+//   fetchArticle: () => void
+//   loadMore: () => void
+//   loadingMore: boolean
+//   isNext: boolean
+// }
 const ArticleList: React.FC = () => {
   /*************************/
   /*******   State   *******/
   /*************************/
-  const history = useHistory();
-  //   const params = useParams();
-  const { TabPane } = Tabs;
+  const history = useHistory()
+  //   const params = useParams()
+  const { TabPane } = Tabs
 
-  const { run, data, loading } = useRequest(async () => getArticleList());
-  console.log(data, loading, history.location.pathname);
+  const { run, data, loading } = useRequest(async () => getArticleList())
+
   /*************************/
   /*******  Function  ******/
   /*************************/
@@ -38,20 +39,18 @@ const ArticleList: React.FC = () => {
   const changeTabs = (key: any) => {
     switch (key) {
       case "blend":
-        run();
-        break;
+        run()
+        break
       case "new":
-        run();
-        break;
+        run()
+        break
       case "hot":
-        run();
-        break;
+        run()
+        break
     }
-  };
+  }
 
-  //   useEffect(() => {
-  //     fetchArticle();
-  //   }, []);
+
   /*************************/
   /*******   render  *******/
   /*************************/
@@ -62,11 +61,11 @@ const ArticleList: React.FC = () => {
         <span className="desc">{React.createElement(icon)}</span>
         {text}
       </Space>
-    );
+    )
     const toArticleDetail = (key: string) => {
-      alert(key);
-      history.push(`/article/${key}`);
-    };
+      alert(key)
+      history.push(`/article/${key}`)
+    }
     // const loadMore = loading ? (
     //   <div
     //     style={{
@@ -92,7 +91,7 @@ const ArticleList: React.FC = () => {
     //       <span className="tips">正在玩命加载中...</span>
     //     )}
     //   </div>
-    // ) : null;
+    // ) : null
     return (
       <List
         itemLayout="vertical"
@@ -106,13 +105,12 @@ const ArticleList: React.FC = () => {
             onClick={() => toArticleDetail(item._id)}
           >
             <List.Item
-              className="item"
-              style={{ padding: "10px 10px" }}
+              style={{ borderBottom: '1px solid #e5e6eb' }}
               key={item._id}
               actions={
                 loading &&
                 ([
-                  // <IconText icon={HistoryOutlined} text={<span className="desc">{formatTime(item._createTime)}</span>} key="list-vertical-message" />,
+                  <IconText icon={HistoryOutlined} text={<span className="desc">{formatTime(item._createTime)}</span>} key="list-vertical-message" />,
                   <IconText
                     icon={EyeOutlined}
                     text={<span className="desc">12</span>}
@@ -134,7 +132,7 @@ const ArticleList: React.FC = () => {
                 loading ? (
                   <Skeleton.Image />
                 ) : (
-                  <img width={180} alt="logo" src={item.thumb} />
+                  <img width={180} alt="logo" src={item.thumb} className="thumb" />
                 )
               }
             >
@@ -155,8 +153,8 @@ const ArticleList: React.FC = () => {
           </div>
         )}
       ></List>
-    );
-  };
+    )
+  }
   return (
     <Card className="article-container">
       {/* 文章内容区域 */}
@@ -167,7 +165,7 @@ const ArticleList: React.FC = () => {
       </Tabs>
       <div className="middle-body">{renderArticleList()}</div>
     </Card>
-  );
-};
+  )
+}
 
-export default React.memo(ArticleList);
+export default React.memo(ArticleList)

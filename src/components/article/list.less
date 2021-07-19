@@ -1,3 +1,21 @@
 .article-container {
-    margin-top: 20px;
+  margin: 0px 10px;
+  .title {
+    font-weight: bold;
+    color: #1d2129;
+    word-break: break-all;
+  }
+  .thumb{
+    flex: 0 0 auto;
+    width: 120px;
+    height: 80px;
+    margin-left: 24px;
+    background-color: #fff;
+    border-radius: 2px;
+  }
+  @media (max-width: 540px) {
+    .thumb {
+      display: none;
+    }
+  }
 }

@@ -7,6 +7,7 @@ import reduxIcon from "@/assets/image/public/redux-action.svg";
 import flaskIcon from "@/assets/image/public/flask.svg";
 import antIcon from "@/assets/image/public/ant-design.svg";
 import viteIcon from "../../../favicon.svg";
+import tencentIcon from '@/assets/image/public/tencent_yun.svg'
 
 const footer: React.FC = () => {
   const { Footer } = Layout;
@@ -18,6 +19,7 @@ const footer: React.FC = () => {
       <div>粤ICP备2021062484号-1</div>
       <div>Copyright © 2021 lrboy.cn, All Rights Reserved</div>
       <div className="logo-group">
+        <img src={tencentIcon} alt="tencent_yun" />
         <img src={antIcon} alt="antdesign" />
         <img src={reduxIcon} alt="redux" />
         <img src={reactIcon} alt="react" className="react" />

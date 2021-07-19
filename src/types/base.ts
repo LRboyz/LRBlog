@@ -29,6 +29,7 @@ export type categoryType = {
 export type tagType = {
   _id: string;
   tag_name: string;
+  tag_color: string;
   tag_banner: string;
   _createTime: number;
   _updateTime: number;

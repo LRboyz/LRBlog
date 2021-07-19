@@ -1,18 +1,18 @@
-import "./style.less";
-import React, { useState } from "react";
-import { Switch, useDarkreader } from "react-darkreader";
-import { Button, Layout, Menu } from "antd";
-import { Link } from "react-router-dom";
-import logo from "@/assets/image/common/logo.png";
-import logo_light from "@/assets/image/common/logo_light.png";
-import LoginModal from "../login/login.component";
-import { useHistory } from "react-router-dom";
+import "./style.less"
+import React, { useState } from "react"
+import { Switch, useDarkreader } from "react-darkreader"
+import { Button, Layout, Menu } from "antd"
+import { Link } from "react-router-dom"
+import logo from "@/assets/image/common/logo.png"
+import logo_light from "@/assets/image/common/logo_light.png"
+import LoginModal from "../login/login.component"
+import { useHistory } from "react-router-dom"
 
 const Header: React.FC = () => {
-  const [useLoginModal, setLoginModal] = useState(false);
-  const [isDark, { toggle }] = useDarkreader(false);
-  const history = useHistory();
-  const { Header } = Layout;
+  const [useLoginModal, setLoginModal] = useState(false)
+  const [isDark, { toggle }] = useDarkreader(false)
+  const history = useHistory()
+  const { Header } = Layout
   return (
     <div className="main-header-box">
       <Header className="header">
@@ -22,6 +22,7 @@ const Header: React.FC = () => {
             backgroundImage: isDark ? `url(${logo})` : `url(${logo_light})`,
           }}
         />
+        <div style={{ flex: 1 }}></div>
         <Menu
           className="nav"
           mode="horizontal"
@@ -37,7 +38,7 @@ const Header: React.FC = () => {
             <Link to="/about">关于我</Link>
           </Menu.Item>
         </Menu>
-        <div style={{ flex: 1 }}></div>
+
         <div className="btn-group">
           <Switch checked={isDark} onChange={toggle} styling="github" />
           <Button
@@ -54,7 +55,7 @@ const Header: React.FC = () => {
         />
       </Header>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
