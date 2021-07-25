@@ -1,11 +1,21 @@
 .article-container {
   margin: 0px 10px;
+
+  .article-item:hover {
+    cursor: pointer;
+    background: #f1f0f0;
+    transition: all 0.3s ease;
+  }
+
   .title {
+    display: flex;
     font-weight: bold;
-    color: #1d2129;
+    color: #0052d9;
     word-break: break-all;
   }
-  .thumb{
+
+
+  .thumb {
     flex: 0 0 auto;
     width: 120px;
     height: 80px;
@@ -13,6 +23,25 @@
     background-color: #fff;
     border-radius: 2px;
   }
+
+  .desc {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 22px;
+    // color: #0052d9;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .category-text,
+  .tips {
+    color: #0052d9;
+    font-weight: bold;
+  }
+
   @media (max-width: 540px) {
     .thumb {
       display: none;

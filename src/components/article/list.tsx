@@ -1,55 +1,83 @@
-import React from "react"
-import "./list.less"
-import { Card, Tabs, List, Space, Button, Skeleton } from "antd"
+import React, { useEffect, useState } from "react";
+import "./list.less";
+import { Card, Tabs, List, Space, Button, Skeleton } from "antd";
 import {
   CommentOutlined,
   EyeOutlined,
   HistoryOutlined,
   LikeOutlined,
   NumberOutlined,
-} from "@ant-design/icons"
-import { useHistory } from "react-router-dom"
-import { articleType } from "@/types/base"
-import { getArticleList } from "@/services/api/article"
-import { useRequest } from "ahooks"
-import formatTime from "@/utils/time"
+} from "@ant-design/icons";
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { articleType } from "@/types/base";
+import { getArticleList } from "@/services/api/article";
+import { useRequest } from "ahooks";
+import formatTime from "@/utils/time";
 
-// export type articlePropsType = {
-//   list: articleType[]
-//   loading: boolean
-//   fetchArticle: () => void
-//   loadMore: () => void
-//   loadingMore: boolean
-//   isNext: boolean
-// }
 const ArticleList: React.FC = () => {
   /*************************/
   /*******   State   *******/
   /*************************/
-  const history = useHistory()
-  //   const params = useParams()
-  const { TabPane } = Tabs
+  const history = useHistory();
+  const [total, setTotal] = useState<number>(0);
+  const [next, setNext] = useState<boolean>(true);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const { pathname } = useLocation();
+  const match = useRouteMatch<any>("/category/:id");
+  const { TabPane } = Tabs;
 
-  const { run, data, loading } = useRequest(async () => getArticleList())
+  const { run, data, loading } = useRequest((params?) => fetchData(params));
 
+  useEffect(() => {
+    const query = {
+      query: {
+        article_category: match?.params.id,
+      },
+    };
+    setNext(true);
+    run(query);
+  }, [pathname]);
   /*************************/
   /*******  Function  ******/
   /*************************/
 
+  const fetchData = async (params?: any) => {
+    const { data, total } = await getArticleList(params);
+    setTotal(total);
+    return {
+      data,
+    };
+  };
+  const getMoreArticleList = async () => {
+    let list = [] as articleType[];
+    setNext(true);
+    setCurrentPage((prev) => prev + 1);
+    console.log(currentPage, "加載更多...");
+    const res = await getArticleList(null, {
+      limit: 5,
+      skip: currentPage * 5,
+    });
+
+    res.total >= data!.data.length ? setNext(false) : next;
+    list = data!.data.concat(res!.data!);
+    return {
+      list,
+    };
+  };
+
   const changeTabs = (key: any) => {
     switch (key) {
       case "blend":
-        run()
-        break
+        run();
+        break;
       case "new":
-        run()
-        break
+        run();
+        break;
       case "hot":
-        run()
-        break
+        run();
+        break;
     }
-  }
-
+  };
 
   /*************************/
   /*******   render  *******/
@@ -61,56 +89,66 @@ const ArticleList: React.FC = () => {
         <span className="desc">{React.createElement(icon)}</span>
         {text}
       </Space>
-    )
+    );
     const toArticleDetail = (key: string) => {
-      alert(key)
-      history.push(`/article/${key}`)
-    }
-    // const loadMore = loading ? (
-    //   <div
-    //     style={{
-    //       textAlign: "center",
-    //       marginTop: 12,
-    //       height: 32,
-    //       lineHeight: "32px",
-    //     }}
-    //   >
-    //     {loadingMore ? (
-    //       <Button
-    //         ghost
-    //         loading={props.loadingMore}
-    //         shape="round"
-    //         onClick={() => props.loadMore()}
-    //         disabled={!props.isNext}
-    //       >
-    //         <span className="tips">
-    //           {props.isNext ? "加载更多" : "没有更多文章了呢..."}
-    //         </span>
-    //       </Button>
-    //     ) : (
-    //       <span className="tips">正在玩命加载中...</span>
-    //     )}
-    //   </div>
-    // ) : null
+      history.push(`/blog/${key}`);
+    };
+
+    const loadMore = !loading ? (
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: 12,
+          height: 32,
+          lineHeight: "32px",
+        }}
+      >
+        {/* {loading ? ( */}
+        <Button
+          ghost
+          // loading={loading}
+          shape="round"
+          onClick={() => getMoreArticleList()}
+          disabled={!next}
+        >
+          <span className="tips">
+            {next ? "加载更多" : "肥肠抱歉，木有更多文章了...😿"}
+          </span>
+        </Button>
+
+        {/* : (
+          <span className="tips">正在玩命加载中...</span>
+        )} */}
+      </div>
+    ) : null;
     return (
       <List
         itemLayout="vertical"
         size="large"
         loading={loading}
-        // loadMore={loadMore}
+        loadMore={loadMore}
         dataSource={data?.data}
         renderItem={(item: articleType) => (
           <div
+            className="article-item"
             style={{ marginBottom: 10 }}
             onClick={() => toArticleDetail(item._id)}
           >
             <List.Item
-              style={{ borderBottom: '1px solid #e5e6eb' }}
+              style={{ borderBottom: "1px solid #e5e6eb" }}
               key={item._id}
               actions={
-                loading &&
+                !loading &&
                 ([
-                  <IconText icon={HistoryOutlined} text={<span className="desc">{formatTime(item._createTime)}</span>} key="list-vertical-message" />,
+                  <IconText
+                    icon={HistoryOutlined}
+                    text={
+                      <span className="desc">
+                        {formatTime(item._createTime)}
+                      </span>
+                    }
+                    key="list-vertical-message"
+                  />,
                   <IconText
                     icon={EyeOutlined}
                     text={<span className="desc">12</span>}
@@ -132,7 +170,12 @@ const ArticleList: React.FC = () => {
                 loading ? (
                   <Skeleton.Image />
                 ) : (
-                  <img width={180} alt="logo" src={item.thumb} className="thumb" />
+                  <img
+                    width={180}
+                    alt="logo"
+                    src={item.thumb}
+                    className="thumb"
+                  />
                 )
               }
             >
@@ -142,8 +185,7 @@ const ArticleList: React.FC = () => {
                 <List.Item.Meta
                   title={
                     <div className="title">
-                      {item.title}
-                      {/* <IconText icon={NumberOutlined} text={<span className="desc">{item.article_category?.}</span>} key="list-vertical-message" /> */}
+                      <span style={{ color: "black" }}>{item.title}</span>
                     </div>
                   }
                   description={<span className="desc">{item.description}</span>}
@@ -153,8 +195,8 @@ const ArticleList: React.FC = () => {
           </div>
         )}
       ></List>
-    )
-  }
+    );
+  };
   return (
     <Card className="article-container">
       {/* 文章内容区域 */}
@@ -163,9 +205,9 @@ const ArticleList: React.FC = () => {
         <TabPane tab={<span>最新</span>} key="new" />
         <TabPane tab={<span>热门</span>} key="hot" />
       </Tabs>
-      <div className="middle-body">{renderArticleList()}</div>
+      {renderArticleList()}
     </Card>
-  )
-}
+  );
+};
 
-export default React.memo(ArticleList)
+export default React.memo(ArticleList);
