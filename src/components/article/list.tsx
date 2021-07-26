@@ -13,42 +13,39 @@ import { articleType } from "@/types/base";
 import { getArticleList } from "@/services/api/article";
 import { useRequest } from "ahooks";
 import formatTime from "@/utils/time";
+import dog from '@/assets/image/common/dog.jpg'
 
 const ArticleList: React.FC = () => {
   /*************************/
   /*******   State   *******/
   /*************************/
   const history = useHistory();
-  const [total, setTotal] = useState<number>(0);
+  const [btnLoading, setBtnLoading] = useState<boolean>(false);
   const [next, setNext] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const { pathname } = useLocation();
   const match = useRouteMatch<any>("/category/:id");
   const { TabPane } = Tabs;
 
-  const { run, data, loading } = useRequest((params?) => fetchData(params));
+
 
   useEffect(() => {
-    const query = {
+    const params = {
       query: {
         article_category: match?.params.id,
       },
     };
     setNext(true);
-    run(query);
+    run(params);
+
   }, [pathname]);
   /*************************/
   /*******  Function  ******/
   /*************************/
+  const { run, data, loading } = useRequest((params?) => getArticleList(params));
 
-  const fetchData = async (params?: any) => {
-    const { data, total } = await getArticleList(params);
-    setTotal(total);
-    return {
-      data,
-    };
-  };
   const getMoreArticleList = async () => {
+    setBtnLoading(true)
     let list = [] as articleType[];
     setNext(true);
     setCurrentPage((prev) => prev + 1);
@@ -60,6 +57,7 @@ const ArticleList: React.FC = () => {
 
     res.total >= data!.data.length ? setNext(false) : next;
     list = data!.data.concat(res!.data!);
+    setBtnLoading(false)
     return {
       list,
     };
@@ -104,17 +102,25 @@ const ArticleList: React.FC = () => {
         }}
       >
         {/* {loading ? ( */}
-        <Button
-          ghost
-          // loading={loading}
-          shape="round"
-          onClick={() => getMoreArticleList()}
-          disabled={!next}
-        >
-          <span className="tips">
-            {next ? "加载更多" : "肥肠抱歉，木有更多文章了...😿"}
-          </span>
-        </Button>
+        {
+          data!.data.length > 0 && (
+            <Button
+              ghost
+              loading={btnLoading}
+              shape="round"
+              onClick={() => getMoreArticleList()}
+              disabled={!next}
+            >
+              <span className="tips">
+                {
+                  btnLoading ? "正在玩命加载中....." : (
+                    next ? "加载更多" : "肥肠抱歉，木有更多文章了...😿"
+                  )
+                }
+              </span>
+            </Button>
+          )
+        }
 
         {/* : (
           <span className="tips">正在玩命加载中...</span>
@@ -194,6 +200,14 @@ const ArticleList: React.FC = () => {
             </List.Item>
           </div>
         )}
+        locale={{
+          emptyText: (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <img src={dog} alt="" style={{ width: 60, height: 60 }} />
+              然鹅并没有文章 ~
+            </div>
+          )
+        }}
       ></List>
     );
   };

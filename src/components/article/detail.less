@@ -1,4 +1,9 @@
 .detail-container {
+    .primary {
+        margin: 0 2px;
+        color: #0052d9;
+        font-weight: bold;
+    }
     .detail-box {
         padding: 20px;
         background: #FFFFFF;
@@ -59,5 +64,33 @@
         background: #f8f8f8;
     }
 
-
+    .sidebar {
+ 
+        margin-left:20px;
+        background: #FFFFFF;
+        .meta {
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        .meta:hover {
+            cursor: pointer;
+            color: #0052d9;
+            transition: all 0.3s;
+        }
+    }
+    .tips {
+        cursor: pointer;
+        margin-top: 20px;
+        margin-left: 20px;
+ 
+        height: 120px;
+        overflow: hidden;
+        img{
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    }
 }

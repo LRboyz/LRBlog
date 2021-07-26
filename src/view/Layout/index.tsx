@@ -1,13 +1,18 @@
 import "./style.less"
-import React from "react"
+import React, { useEffect } from "react"
 import { Layout } from "antd"
-import { StoreState } from "@/store"
 import { connect } from "react-redux"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-
+import { useDarkreader } from "react-darkreader";
+import Cookies from "js-cookie";
 
 const HomeMainPage: React.FC = (props) => {
+  const [isDark, { toggle }] = useDarkreader();
+
+  useEffect(() => {
+
+  }, [])
 
   const { Content } = Layout
 
@@ -22,8 +27,5 @@ const HomeMainPage: React.FC = (props) => {
   )
 }
 
-const mapStateToProps = ({ user }: StoreState) => {
-  return { userInfo: user.userInfo }
-}
 
-export default connect(mapStateToProps)(HomeMainPage)
+export default connect()(HomeMainPage)

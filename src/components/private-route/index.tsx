@@ -6,11 +6,11 @@ import { connect } from 'react-redux'
 import CONFIG from '../../config'
 import { HOME } from '../../router/constants'
 import { IRouteProps } from '../../router/types'
-import { StoreState } from '../../store'
 
-type Props = IRouteProps & ReturnType<typeof mapStateToProps>
 
-const PrivateRoute: React.FC<Props> = function ({
+// type Props = IRouteProps & ReturnType<typeof mapStateToProps>
+
+const PrivateRoute: React.FC<any> = function ({
   component: Component,
   childrenRoutes,
   isLogin,
@@ -41,7 +41,7 @@ const PrivateRoute: React.FC<Props> = function ({
 
   if (meta?.isLoginToHome && isLogin) {
     const redirectUrl = qs.parse(location.search).redirectUrl as string
-    const url = redirectUrl || (HOME.HOME_INDEX.path + location.search)
+    const url = redirectUrl || (HOME.INDEX.path + location.search)
     return <Redirect to={url} />
   }
 
@@ -69,12 +69,12 @@ const PrivateRoute: React.FC<Props> = function ({
   )
 }
 
-const mapStateToProps = (state: StoreState) => {
-  return {
-    isLogin: state.user.isLogin
-  }
-}
+// const mapStateToProps = (state: any) => {
+//   return {
+//     isLogin: state.user.isLogin
+//   }
+// }
 
-export const PrivateRouteComponent = connect(mapStateToProps)(PrivateRoute)
+export const PrivateRouteComponent = connect()(PrivateRoute)
 
 export default PrivateRouteComponent
