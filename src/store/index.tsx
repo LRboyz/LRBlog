@@ -1,26 +1,16 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
-import { useDarkreader } from "react-darkreader";
-import Cookies from "js-cookie";
+import systemSlice from "./systemSlice";
 
-const systemSlice = createSlice({
-    name: 'system',
-    initialState: {
-        // isDark: false
-    },
-    reducers: {
-        // changeTheme: state => {
-        //     const isDark = Cookies.getJSON("isDark")
-        //     // const [isDark, { toggle }] = useDarkreader();
-        //     console.log(isDark, "通過Redux獲取的")
-        //     state.isDark = !state.isDark
-        // }
+// BaseType
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+
+
+const store = configureStore({
+    reducer: {
+        system: systemSlice.reducer
     }
 })
 
-// export const { changeTheme } = systemSlice.actions
-
-const store = configureStore({
-    reducer: systemSlice.reducer
-})
-
 export default store
+

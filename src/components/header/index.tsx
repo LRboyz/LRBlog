@@ -17,8 +17,7 @@ const Header: React.FC = () => {
 
   // 修改主题
   const changeTheme = () => {
-    console.log(isDark)
-    Cookies.set('isDark', JSON.stringify(isDark ? 'light' : 'dark'))
+    console.log(isDark, '哈哈哈')
     toggle()
   }
 
@@ -26,17 +25,17 @@ const Header: React.FC = () => {
   const themePanel = () => {
     return (
       // defaultValue = { theme }
-      <Radio.Group onChange={changeTheme} style={{ display: 'flex' }} >
-        <div style={{ padding: 15, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <img src="https://6c72-lrblog-0gonx238c9955a8b-1259094485.tcb.qcloud.la/cloudbase-cms/upload/2021-07-26/7b1dhi57d7tdzwul9dsuzeqjis1hy7fy_.png?sign=9275edee6c861ffb3e992abce6e7ea37&t=1627288750" alt="" style={{ width: 80, height: 90 }} />
-          <Radio value={'dark'} style={{ marginTop: 20 }}>
-            深色
-          </Radio>
-        </div>
+      <Radio.Group onChange={changeTheme} style={{ display: 'flex' }} defaultValue={isDark ? 'dark' : 'light'}>
         <div style={{ padding: 15, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <img src="https://6c72-lrblog-0gonx238c9955a8b-1259094485.tcb.qcloud.la/cloudbase-cms/upload/2021-07-26/nxxsvlnnb19ikbjcbev35beri642cajt_.png?sign=81a00b8ee6a90a45b6f2b1a4442f9704&t=1627288759" alt="" style={{ width: 80, height: 90 }} />
           <Radio value={'light'} style={{ marginTop: 20 }}>
             浅色
+          </Radio>
+        </div>
+        <div style={{ padding: 15, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <img src="https://6c72-lrblog-0gonx238c9955a8b-1259094485.tcb.qcloud.la/cloudbase-cms/upload/2021-07-26/7b1dhi57d7tdzwul9dsuzeqjis1hy7fy_.png?sign=9275edee6c861ffb3e992abce6e7ea37&t=1627288750" alt="" style={{ width: 80, height: 90 }} />
+          <Radio value={'dark'} style={{ marginTop: 20 }}>
+            深色
           </Radio>
         </div>
       </Radio.Group>
@@ -61,13 +60,13 @@ const Header: React.FC = () => {
           defaultSelectedKeys={[history.location.pathname]}
         >
           <Menu.Item key="/">
-            <Link to="/">首页</Link>
+            <Link to="/">Home</Link>
           </Menu.Item>
           <Menu.Item key="/blog">
-            <Link to="/blog">博客</Link>
+            <Link to="/blog">Blog</Link>
           </Menu.Item>
           <Menu.Item key="/about">
-            <Link to="/about">关于我</Link>
+            <Link to="/about">About</Link>
           </Menu.Item>
         </Menu>
 

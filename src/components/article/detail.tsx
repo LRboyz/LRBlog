@@ -1,24 +1,31 @@
-import React, { useState } from "react";
-import { Viewer } from "@bytemd/react";
-import { useRequest } from "ahooks";
-import "./detail.less";
-import { getArticleDetail } from "@/services/api/article";
-import { useRouteMatch } from "react-router-dom";
-import frontmatter from "@bytemd/plugin-frontmatter";
-import "bytemd/dist/index.min.css";
-import highlight from "@bytemd/plugin-highlight-ssr";
-import { Skeleton, Col, Card, } from "antd";
-import "highlight.js/styles/docco.css";
+import React, { useEffect, useState } from "react"
+import { Viewer } from "@bytemd/react"
+import { useRequest } from "ahooks"
+import "./detail.less"
+import { getArticleDetail } from "@/services/api/article"
+import { useRouteMatch } from "react-router-dom"
+import frontmatter from "@bytemd/plugin-frontmatter"
+import "bytemd/dist/index.min.css"
+import highlight from "@bytemd/plugin-highlight-ssr"
+import { Skeleton, Col, Card, Divider, Tag } from "antd"
+import "highlight.js/styles/docco.css"
 import tips from '@/assets/image/common/tips.png'
-// import gfm from "@/bytemd/plugins/gfm";
+import { test } from "@/services/cloudbase"
+// import gfm from "@/bytemd/plugins/gfm"
 
 const articleDetail: React.FC = () => {
-  const plugins = [frontmatter(), highlight()];
-  const match = useRouteMatch<any>("/blog/:article_id");
+  const plugins = [frontmatter(), highlight()]
+  const match = useRouteMatch<any>("/blog/:article_id")
+
+  // useEffect(() => {
+
+  // }, [])
 
   const { data, loading } = useRequest(() =>
     getArticleDetail(match?.params.article_id)
-  );
+  )
+
+  // updateArticleViews()
 
   return (
     <div className="detail-container">
@@ -40,7 +47,7 @@ const articleDetail: React.FC = () => {
             <div className="meta">
               <span className="iconfont icon-yanjingliulankeshi"></span>
               <span style={{ marginLeft: 10 }}>文章已被阅读
-                <strong className="primary">25546</strong>
+                <strong className="primary" onClick={() => test()}>25546</strong>
                 次
               </span>
             </div>
@@ -56,6 +63,19 @@ const articleDetail: React.FC = () => {
                 <strong className="primary">12</strong>
                 条评论</span>
             </div>
+            <Divider />
+            <div>
+              <h3>相关标签</h3>
+              <div>
+                {
+                  data?.data.article_tag.map((tag, key) => {
+                    return (
+                      <Tag color="geekblue" key={key}> {tag.tag_name}</Tag>
+                    )
+                  })
+                }
+              </div>
+            </div>
           </Card>
 
 
@@ -67,7 +87,7 @@ const articleDetail: React.FC = () => {
         </Col>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(articleDetail);
+export default React.memo(articleDetail)

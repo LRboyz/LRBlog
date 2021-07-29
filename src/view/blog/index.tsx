@@ -2,6 +2,7 @@ import React from "react";
 import TagList from '@/components/tag/index'
 import ArticleList from "@/components/article/list";
 import CategoryList from "@/components/category/index";
+import HotArticleList from '@/components/article/hotArticle'
 import { Row, Col, Calendar } from "antd";
 
 const Blog: React.FC = () => {
@@ -16,6 +17,7 @@ const Blog: React.FC = () => {
         </Col>
         <Col xs={0} sm={0} md={6} lg={6} >
           <TagList />
+          <HotArticleList />
           <Calendar fullscreen={false} style={{ width: '100%', marginTop: 20 }} />
         </Col>
       </Row>
