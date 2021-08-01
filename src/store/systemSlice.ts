@@ -8,7 +8,7 @@ const systemSlice = createSlice({
     reducers: {
         // changeTheme: state => {
         //     const isDark = Cookies.getJSON("isDark")
-        //     // const [isDark, { toggle }] = useDarkreader();
+        //     // const [isDark, { toggle }] = useDarkreader()
         //     console.log(isDark, "通過Redux獲取的")
         //     state.isDark = !state.isDark
         // }

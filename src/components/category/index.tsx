@@ -1,33 +1,33 @@
-import React, { useEffect } from "react";
-import { Avatar, Empty, Skeleton } from "antd";
-import { RightCircleTwoTone } from "@ant-design/icons";
-import "./style.less";
-import { useRequest } from "ahooks";
-import { getCategoryList } from "@/services/api/catetgory";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import { categoryType } from "@/types/base";
+import React, { useEffect } from "react"
+import { Avatar, Empty, Skeleton } from "antd"
+import { RightCircleTwoTone } from "@ant-design/icons"
+import "./style.less"
+import { useRequest } from "ahooks"
+import { getCategoryList } from "@/services/api/catetgory"
+import { useHistory, useRouteMatch } from "react-router-dom"
+import { categoryType } from "@/types/base"
 
 const Category: React.FC = () => {
-  useEffect(() => {});
-  const [currentIndex, setCurrentIndex] = React.useState<number>();
-  const history = useHistory();
-  const match = useRouteMatch<any>("/blog/:id");
+  useEffect(() => { })
+  const [currentIndex, setCurrentIndex] = React.useState<number>()
+  const history = useHistory()
+  const match = useRouteMatch<any>("/category/:id")
   const { data, error, loading } = useRequest(async () => {
-    return await getCategoryList();
-  });
+    return await getCategoryList()
+  })
   const selectCategory = (item: categoryType, index: number) => {
-    setCurrentIndex(index);
-    history.push(`/category/${item._id}`);
-  };
+    setCurrentIndex(index)
+    history.push(`/category/${item._id}`)
+
+  }
   return (
     <div className="category-container">
       <ul className="category-list">
         {data?.data.map((item, index) => {
           return (
             <li
-              className={`mb-sm ${
-                match?.params.id === item._id ? "active" : ""
-              }`}
+              className={`mb-sm ${match?.params.id === item._id ? "active" : ""
+                }`}
               key={index}
               onClick={() => selectCategory(item, index)}
             >
@@ -35,7 +35,7 @@ const Category: React.FC = () => {
               <span className="fs-sm">{item.category_name}</span>
               <RightCircleTwoTone />
             </li>
-          );
+          )
         })}
         {loading && (
           <div>
@@ -50,7 +50,7 @@ const Category: React.FC = () => {
                   title={false}
                   paragraph={{ rows: 1, width: 100 }}
                 />
-              );
+              )
             })}
           </div>
         )}
@@ -65,7 +65,7 @@ const Category: React.FC = () => {
         )}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(Category);
+export default React.memo(Category)

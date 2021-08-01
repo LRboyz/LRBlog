@@ -1,5 +1,5 @@
-const isProduction = import.meta.env.PROD;
-const isDevelopment = !isProduction;
+const isProduction = import.meta.env.PROD
+const isDevelopment = !isProduction
 
 const CONFIG = {
   // 路由 basename
@@ -11,6 +11,9 @@ const CONFIG = {
       ? "https://lrboy.cn/cms/v1.0"
       : "https://localhost:5000/api",
   },
-};
+  pageConfig: {
+    limit: 5,
+  }
+}
 
-export default CONFIG;
+export default CONFIG

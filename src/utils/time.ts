@@ -1,4 +1,4 @@
-const formatTime = (timestamp: number): string => {
+export const formatTime = (timestamp: number): string => {
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
     const ms = startOfDay.getTime();
@@ -9,5 +9,3 @@ const formatTime = (timestamp: number): string => {
         return `${String(time.getHours()).padStart(2, '0')}:${String(time.getMinutes()).padStart(2, '0')}`;
     }
 };
-
-export default formatTime;

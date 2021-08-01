@@ -4,11 +4,11 @@ import { Layout } from "antd"
 import { connect } from "react-redux"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import { useDarkreader } from "react-darkreader";
-import Cookies from "js-cookie";
+import { useDarkreader } from "react-darkreader"
+import Cookies from "js-cookie"
 
 const HomeMainPage: React.FC = (props) => {
-  const [isDark, { toggle }] = useDarkreader();
+  const [isDark, { toggle }] = useDarkreader()
 
   useEffect(() => {
 
