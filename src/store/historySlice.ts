@@ -1,3 +1,4 @@
+import { updateArticleZan } from '@/services/cloudbase'
 import { createSlice } from '@reduxjs/toolkit'
 import Cookies from 'js-cookie'
 
@@ -21,16 +22,14 @@ const historySlice = createSlice({
       const initState = Cookies.getJSON('history')
       return {
         ...state,
-        articles: initState.articles,
-        comments: initState.comments,
+        articles: initState.articles || [],
+        comments: initState.comments || [],
       }
     },
     handleLikeArticle: (state, action) => {
       console.log('执行了Redux里面的方法，参数是:', action)
       state.articles.push(action.payload)
-      Cookies.set('history', {
-        ...state,
-      })
+      Cookies.set('history', { ...state })
     },
     handleLikeComment: (state) => {},
   },

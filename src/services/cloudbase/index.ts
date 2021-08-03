@@ -14,8 +14,17 @@ export const updateArticleView = async (article_id: string) => {
       .update({
         article_view: _.inc(1),
       })
-      .then((res) => {
-        // console.log(res, "updateView")
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const updateArticleZan = async (article_id: string) => {
+  try {
+    db.collection('article')
+      .doc(article_id)
+      .update({
+        article_zan: _.inc(1),
       })
   } catch (error) {
     console.log(error)
