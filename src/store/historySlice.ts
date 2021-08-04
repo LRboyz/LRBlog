@@ -19,7 +19,7 @@ const historySlice = createSlice({
   },
   reducers: {
     setInitialState: (state) => {
-      const initState = Cookies.getJSON('history')
+      const initState = Cookies.getJSON('history') || {}
       return {
         ...state,
         articles: initState.articles || [],

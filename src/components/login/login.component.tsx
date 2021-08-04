@@ -1,11 +1,11 @@
-import React from 'react';
-import './less/login.less';
-import cowPicture from '@/assets/image/common/cow.png';
-import { Modal, Button, Form, Checkbox, Input } from 'antd';
-import { CloseCircleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import React from 'react'
+import './less/login.less'
+import cowPicture from '@/assets/image/common/cow.png'
+import { Modal, Button, Form, Checkbox, Input } from 'antd'
+import { CloseCircleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 
 function LoginModal(props: Props) {
-  const { showLogin } = props;
+  const { showLogin } = props
   // let form = {} as any;
   // let [loginForm, setLoginForm] = useState(form);
 
@@ -35,7 +35,7 @@ function LoginModal(props: Props) {
             name="username"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input prefix={<UserOutlined />} />
+            <Input prefix={<UserOutlined />} placeholder="用户名或手机号"/>
           </Form.Item>
 
           <Form.Item
@@ -43,7 +43,7 @@ function LoginModal(props: Props) {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password prefix={<LockOutlined />} />
+            <Input.Password prefix={<LockOutlined />} placeholder="请输入您的密码"/>
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked">

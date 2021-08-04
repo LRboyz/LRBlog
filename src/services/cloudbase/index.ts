@@ -7,6 +7,7 @@ const app = cloudbase.init({
 const db = app.database()
 const _ = db.command
 
+// 更新浏览量
 export const updateArticleView = async (article_id: string) => {
   try {
     db.collection('article')
@@ -18,7 +19,7 @@ export const updateArticleView = async (article_id: string) => {
     console.log(error)
   }
 }
-
+// 更新文章点赞数
 export const updateArticleZan = async (article_id: string) => {
   try {
     db.collection('article')
@@ -26,6 +27,14 @@ export const updateArticleZan = async (article_id: string) => {
       .update({
         article_zan: _.inc(1),
       })
+  } catch (error) {
+    console.log(error)
+  }
+}
+// 提交评论
+export const postComment = async (data: any) => {
+  try {
+    db.collection('comment').add({ ...data })
   } catch (error) {
     console.log(error)
   }

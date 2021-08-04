@@ -1,5 +1,5 @@
-const isProduction = import.meta.env.PROD
-const isDevelopment = !isProduction
+export const isProduction = import.meta.env.PROD
+export const isDevelopment = !isProduction
 
 const CONFIG = {
   // 路由 basename

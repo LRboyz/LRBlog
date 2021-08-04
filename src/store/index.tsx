@@ -2,6 +2,7 @@ import { createSlice, configureStore } from '@reduxjs/toolkit'
 import systemSlice from './systemSlice'
 import articleSlice from './articleSlice'
 import historySlice from './historySlice'
+import {isProduction} from "@/config"
 
 // BaseType
 export type RootState = ReturnType<typeof store.getState>
@@ -12,7 +13,7 @@ const store = configureStore({
     article: articleSlice.reducer,
     system: systemSlice.reducer,
     history: historySlice.reducer,
-  },
+  }
 })
 
 export default store

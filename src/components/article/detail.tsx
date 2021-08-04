@@ -30,17 +30,18 @@ const articleDetail: React.FC = () => {
   }, [match?.params.article_id])
 
   useEffect(() => {
-    console.log('articles', articles)
+    // console.log('articles', articles)
     articles.includes(match?.params.article_id) ? setLiked(true) : null
   }, [])
 
-  console.log(articles, comments, 'Redux里的数据')
+  // console.log(articles, comments, 'Redux里的数据')
   const { data, loading } = useRequest(() =>
     getArticleDetail(match?.params.article_id).then((res) => {
       setLikesNum(res.data.article_zan)
       return res
     })
   )
+
 
   const renderAnchor = () => {
     const { Link } = Anchor
@@ -101,24 +102,24 @@ const articleDetail: React.FC = () => {
                     <span>文章分类:</span>
                     {data?.data.article_category
                       ? data?.data.article_category.map((category) => {
-                          return (
-                            <Tag color="geekblue" key={category._id}>
-                              {category.category_name}
-                            </Tag>
-                          )
-                        })
+                        return (
+                          <Tag color="geekblue" key={category._id}>
+                            {category.category_name}
+                          </Tag>
+                        )
+                      })
                       : null}
                   </div>
                   <div className="meta-item">
                     <span>文章标签:</span>
                     {data?.data.article_tag
                       ? data?.data.article_tag.map((tag) => {
-                          return (
-                            <Tag key={tag._id} color={tag.tag_color}>
-                              {tag.tag_name}
-                            </Tag>
-                          )
-                        })
+                        return (
+                          <Tag key={tag._id} color={tag.tag_color}>
+                            {tag.tag_name}
+                          </Tag>
+                        )
+                      })
                       : null}
                   </div>
                 </div>

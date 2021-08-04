@@ -78,13 +78,6 @@ const Header: React.FC = () => {
             </svg>
           </Popover>
           {/* <Switch checked={isDark} onChange={toggle} styling="github" /> */}
-          {/* <Button
-            shape="round"
-            onClick={() => setLoginModal(true)}
-            style={{ marginLeft: 20 }}
-          >
-            登陆
-          </Button> */}
         </div>
         <Col xs={0} sm={0} md={0} lg={6}>
           <Menu className="nav" mode="horizontal" defaultSelectedKeys={[history.location.pathname]}>
@@ -99,9 +92,15 @@ const Header: React.FC = () => {
             </Menu.Item>
           </Menu>
         </Col>
-
-        <LoginModal showLogin={useLoginModal} closeLogin={() => setLoginModal(false)} />
+        {/*<Button*/}
+        {/*    shape="round"*/}
+        {/*    onClick={() => setLoginModal(true)}*/}
+        {/*    style={{ marginLeft: 20 }}*/}
+        {/*>*/}
+        {/*  登陆*/}
+        {/*</Button>*/}
       </Header>
+      <LoginModal showLogin={useLoginModal} closeLogin={() => setLoginModal(false)} />
     </div>
   )
 }
