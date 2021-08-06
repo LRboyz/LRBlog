@@ -1,40 +1,35 @@
-import React, { createElement, useState } from 'react'
+import React, { createElement, useEffect, useState, useRef } from 'react'
 import { Comment, Tooltip, Avatar, List, Form, Input, Button } from 'antd'
 import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons'
 import './style.less'
 import moment from 'moment'
+import { getCommentData } from '@/services/api/comment'
+import { commentType } from '@/types/base'
+import { random } from 'lodash'
+import { scrollToElem } from '@/utils/scroll'
 
 const comment: React.FC = () => {
   const [likes, setLikes] = useState(0)
   const [dislikes, setDislikes] = useState(0)
+  const inputRef = useRef(null)
+  const [currentPlaceHolder, setCurrentPlaceHolder] = useState<string>('写下你的评论...')
+  // const [showReplyInput, setReplyInput] = useState<boolean>(false)
   const [action, setAction] = useState<any>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [currentCommentId, setCurrentCommentId] = useState<string>("")
   const [value, setValue] = useState("")
-  const [comments, setComments] = useState([])
+  const [comments, setComments] = useState<commentType[]>([])
   const { TextArea } = Input
   const [form] = Form.useForm()
 
-  const CommentList = ({ comments }: any) => (
-    <List
-      dataSource={comments}
-      header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-      itemLayout="horizontal"
-    // renderItem={props => <Comment {...props} />}
-    />
-  )
+  useEffect(() => {
+    fetchCommentList()
+  }, [])
 
-  // const Editor = ({ onChange, onSubmit, submitting, value }: any) => (
-  //   <>
-  //     <Form.Item>
-  //       <TextArea rows={4} onChange={onChange} value={value} placeholder="写下你的评论..." />
-  //     </Form.Item>
-  //     <Form.Item>
-  //       <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-  //         发布
-  //       </Button>
-  //     </Form.Item>
-  //   </>
-  // )
+  const fetchCommentList = async () => {
+    const { data } = await getCommentData()
+    setComments(data)
+  }
 
   const like = () => {
     setLikes(1)
@@ -47,34 +42,35 @@ const comment: React.FC = () => {
     setDislikes(1)
     setAction('disliked')
   }
+  const handleReply = (item: commentType) => {
+    // console.log('点击了回复', inputRef.current)
+    // setCurrentCommentId(comment_id)
+    // 动态滚动到输入框的位置，并且进行focus
+    scrollToElem('.ant-input', 500, -240)
+    const Ref = inputRef.current as any
+    Ref.focus()
+    setCurrentPlaceHolder(`回复${item.comment_author.name}:`)
+    // document.getElementById("#myInput")?.focus()
+    // focus 输入框
+    // document.getElementById('comment-textarea').focus()
+  }
   const handleChange = (e: any) => {
-    console.log(e, 'e')
+    // console.log(e, 'e')
     setValue(old => e.target.value)
   }
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: unknown) => {
     console.log("提交的数据：", values)
   }
-  const actions = [
-    <Tooltip key="comment-basic-like" title="Like">
-      <span onClick={like}>
-        {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}
-        <span className="comment-action">{likes}</span>
-      </span>
-    </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
-        {React.createElement(action === 'disliked' ? DislikeFilled : DislikeOutlined)}
-        <span className="comment-action">{dislikes}</span>
-      </span>
-    </Tooltip>,
-    <span key="comment-basic-reply-to">Reply to</span>,
-  ]
+
+  const handleFocus = () => {
+    setCurrentCommentId('')
+    setCurrentPlaceHolder('')
+  }
+
   return (
     <div className="comment-container">
-      <h3>评论（358）</h3>
-      {comments.length > 0 && <CommentList comments={comments} />}
       <Form form={form} onFinish={handleSubmit}>
-        <div className="input-group">
+        {/* <div className="input-group">
           <div className="input-item">
             <Form.Item
               name="username"
@@ -118,21 +114,22 @@ const comment: React.FC = () => {
               <Input placeholder="头像网址(仅用于生成头像)" />
             </Form.Item>
           </div>
-        </div>
+        </div> */}
         <Form.Item name="content">
+
           <Comment
             // actions={actions}
             // author={<a>TianGo</a>}
             avatar={
               <Avatar
-                src="https://iconfont.alicdn.com/t/d82934be-d00e-4fbd-9192-e20c62ff53ba.png"
+                src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4221a1e99ec6e23bc4c6c4716bb6d3ea~300x300.image"
                 alt="avatar"
               />
             }
             content={
               <>
                 <Form.Item name="content">
-                  <TextArea rows={4} onChange={handleChange} value={value} placeholder="写下你的评论..." />
+                  <Input ref={inputRef} onChange={handleChange} value={value} placeholder={currentPlaceHolder} onFocus={handleFocus} />
                 </Form.Item>
                 <Form.Item>
                   <Button htmlType="submit" loading={submitting} type="primary">
@@ -141,10 +138,45 @@ const comment: React.FC = () => {
                 </Form.Item>
               </>
             }
+
           />
         </Form.Item>
-      </Form>
 
+        {comments.length > 0 &&
+          <List
+            dataSource={comments}
+            header={<h3 style={{ fontWeight: 'bold' }}>评论({comments.length})</h3>}
+            itemLayout="horizontal"
+            renderItem={(item) =>
+              <Comment
+                author={item.comment_author.name}
+                avatar={
+                  <Avatar
+                    src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4221a1e99ec6e23bc4c6c4716bb6d3ea~300x300.image"
+                    alt="avatar"
+                  />
+                }
+                actions={
+                  [
+                    <div style={{ width: '100%' }} >
+                      <Tooltip key="comment-basic-like" title="赞" >
+                        <span onClick={like} className="like">
+                          {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}&nbsp;
+                          <span className="comment-action">{likes}</span>
+                        </span>
+                      </Tooltip>
+                      <span key="comment-basic-reply-to" className="reply-btn" onClick={() => handleReply(item)}>回复</span>
+                      {/* <Form.Item name="content"> */}
+
+                      {/* </Form.Item> */}
+                    </div >
+                  ]
+                }
+                content={item.comment_content}
+
+              />}
+          />}
+      </Form>
     </div>
   )
 }

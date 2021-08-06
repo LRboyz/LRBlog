@@ -38,3 +38,17 @@ export type tagType = {
   _createTime: number
   _updateTime: number
 }
+
+export type commentType = {
+  _id: string
+  comment_author: {
+    name: string
+    email: string
+    site: string
+  },
+  comment_content: string
+  pid: string
+  agent: string
+  comment_like: number
+  ip: string
+}

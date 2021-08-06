@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { handleLikeArticle } from '@/store/historySlice'
 import { RootState } from '@/store'
 
+
 const articleDetail: React.FC = () => {
   const plugins = [frontmatter(), highlight()]
   const [liked, setLiked] = useState<boolean>(false)
@@ -124,6 +125,7 @@ const articleDetail: React.FC = () => {
                   </div>
                 </div>
                 <Divider />
+
                 <Comment />
               </>
             )}

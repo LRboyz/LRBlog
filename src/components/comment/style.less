@@ -1,11 +1,27 @@
 .comment-container {
   margin-top: 30px;
   .ant-input-group.ant-input-group-compact {
-    display: flex!important;
+    display: flex !important;
   }
   .ant-comment {
-
-    .ant-comment-content {
+    padding: 10px;
+    .ant-comment-actions {
+      width: 100%;
+      padding: 10px 10px 0 0;
+      display: flex;
+      justify-content: flex-end;
+      li{
+        width: 100%;
+      }
+    }
+    .reply-btn {
+      cursor: pointer;
+      margin-left: 30px;
+    }
+    .reply-btn:hover,
+    .like:hover {
+      cursor: pointer;
+      color: #4f92ff;
     }
   }
   .input-group {

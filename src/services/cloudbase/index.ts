@@ -31,11 +31,4 @@ export const updateArticleZan = async (article_id: string) => {
     console.log(error)
   }
 }
-// 提交评论
-export const postComment = async (data: any) => {
-  try {
-    db.collection('comment').add({ ...data })
-  } catch (error) {
-    console.log(error)
-  }
-}
+
