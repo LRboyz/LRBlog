@@ -5,7 +5,7 @@ export const postCommentData = async (data: any) => {
     return await request(`/comment`, {
         method: "POST",
         data: {
-            ...data
+            data: { ...data }// 腾讯云文档要求这个规范 - -!
         }
     })
 }
@@ -16,3 +16,5 @@ export const getCommentData = async (params?: any): Promise<Iresponse<commentTyp
         params: { ...params }
     })
 }
+
+// export const getCommentDataById = async ()

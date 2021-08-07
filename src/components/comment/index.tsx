@@ -1,21 +1,24 @@
 import React, { createElement, useEffect, useState, useRef } from 'react'
-import { Comment, Tooltip, Avatar, List, Form, Input, Button } from 'antd'
+import { Comment, Tooltip, Avatar, List, Form, Input, Button, message } from 'antd'
 import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from '@ant-design/icons'
 import './style.less'
 import moment from 'moment'
-import { getCommentData } from '@/services/api/comment'
+import { getCommentData, postCommentData } from '@/services/api/comment'
 import { commentType } from '@/types/base'
 import { random } from 'lodash'
 import { scrollToElem } from '@/utils/scroll'
 
-const comment: React.FC = () => {
+type Props = {
+  article_id: string
+}
+const comment: React.FC<Props> = ({ article_id }) => {
   const [likes, setLikes] = useState(0)
   const [dislikes, setDislikes] = useState(0)
   const inputRef = useRef(null)
+  const [loading, setLoading] = useState<boolean>(false)
   const [currentPlaceHolder, setCurrentPlaceHolder] = useState<string>('写下你的评论...')
   // const [showReplyInput, setReplyInput] = useState<boolean>(false)
   const [action, setAction] = useState<any>(null)
-  const [submitting, setSubmitting] = useState(false)
   const [currentCommentId, setCurrentCommentId] = useState<string>("")
   const [value, setValue] = useState("")
   const [comments, setComments] = useState<commentType[]>([])
@@ -46,10 +49,12 @@ const comment: React.FC = () => {
     // console.log('点击了回复', inputRef.current)
     // setCurrentCommentId(comment_id)
     // 动态滚动到输入框的位置，并且进行focus
+
     scrollToElem('.ant-input', 500, -240)
-    const Ref = inputRef.current as any
-    Ref.focus()
     setCurrentPlaceHolder(`回复${item.comment_author.name}:`)
+    const Ref = inputRef.current as any
+    // Ref.setValue("")
+    Ref.focus()
     // document.getElementById("#myInput")?.focus()
     // focus 输入框
     // document.getElementById('comment-textarea').focus()
@@ -58,8 +63,23 @@ const comment: React.FC = () => {
     // console.log(e, 'e')
     setValue(old => e.target.value)
   }
-  const handleSubmit = (values: unknown) => {
-    console.log("提交的数据：", values)
+  const handleSubmit = async (values: any) => {
+    // console.log(values, 'values')
+    const commentInfo = {
+      ...values,
+      article_id: article_id,
+      comment_author: {
+        name: `用户${Math.random() * 100}`,
+        email: `用户${Math.random() * 100}@github.com`
+      }
+    }
+    setLoading(true)
+    await postCommentData(commentInfo)
+    await getCommentData().then(res => {
+      setComments(res.data)
+      setLoading(false)
+      message.success("发布评论成功！")
+    }).catch(err => message.error("评论失败！"))
   }
 
   const handleFocus = () => {
@@ -115,32 +135,32 @@ const comment: React.FC = () => {
             </Form.Item>
           </div>
         </div> */}
-        <Form.Item name="content">
 
-          <Comment
-            // actions={actions}
-            // author={<a>TianGo</a>}
-            avatar={
-              <Avatar
-                src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4221a1e99ec6e23bc4c6c4716bb6d3ea~300x300.image"
-                alt="avatar"
-              />
-            }
-            content={
-              <>
-                <Form.Item name="content">
-                  <Input ref={inputRef} onChange={handleChange} value={value} placeholder={currentPlaceHolder} onFocus={handleFocus} />
-                </Form.Item>
-                <Form.Item>
-                  <Button htmlType="submit" loading={submitting} type="primary">
-                    发布
-                  </Button>
-                </Form.Item>
-              </>
-            }
 
-          />
-        </Form.Item>
+        <Comment
+          // actions={actions}
+          // author={<a>TianGo</a>}
+          avatar={
+            <Avatar
+              src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4221a1e99ec6e23bc4c6c4716bb6d3ea~300x300.image"
+              alt="avatar"
+            />
+          }
+          content={
+            <>
+              <Form.Item name="comment_content">
+                <Input ref={inputRef} onChange={handleChange} allowClear value={value} placeholder={currentPlaceHolder} onFocus={handleFocus} />
+              </Form.Item>
+              <Form.Item>
+                <Button htmlType="submit" loading={loading} type="primary">
+                  {loading ? "发布中" : "发布"}
+                </Button>
+              </Form.Item>
+            </>
+          }
+
+        />
+
 
         {comments.length > 0 &&
           <List

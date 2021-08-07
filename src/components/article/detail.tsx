@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Viewer, Editor } from '@bytemd/react'
+import { Viewer, Editor, } from '@bytemd/react'
 import { getProcessor } from 'bytemd'
 import { useRequest } from 'ahooks'
 import './less/detail.less'
@@ -16,6 +16,7 @@ import { GithubFilled, LikeOutlined, WechatFilled } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { handleLikeArticle } from '@/store/historySlice'
 import { RootState } from '@/store'
+import { Toc } from '@/utils/toc'
 
 
 const articleDetail: React.FC = () => {
@@ -25,7 +26,6 @@ const articleDetail: React.FC = () => {
   const match = useRouteMatch<any>('/blog/:article_id')
   const dispatch = useDispatch()
   const { articles, comments } = useSelector((state: RootState) => state.history)
-
   useEffect(() => {
     updateArticleView(match?.params.article_id)
   }, [match?.params.article_id])
@@ -45,6 +45,7 @@ const articleDetail: React.FC = () => {
 
 
   const renderAnchor = () => {
+
     const { Link } = Anchor
     let hast: any
     getProcessor({
@@ -57,18 +58,23 @@ const articleDetail: React.FC = () => {
         },
       ],
     }).processSync(data?.data.content!)
-    return hast.children.map((item: any, key: number) => {
-      if (item.tagName === 'h2') {
-        return (
-          <Anchor style={{ marginLeft: 20 }} key={key} offsetTop={80}>
-            <Link
-              key={Math.random()}
-              href={`#user-content-${item.children[0]?.value}`}
-              title={item.children[0]?.value}
-            ></Link>
-          </Anchor>
-        )
-      }
+
+    console.log(Toc(hast))
+    return Toc(hast).map((item: any, key: number) => {
+      // if (item.tagName === 'h2') {
+      return (
+        <Anchor style={{ marginLeft: 20, paddingLeft: (item.level - 1) * 16 + 8 }} key={key} offsetTop={80}>
+
+          <Link
+            key={Math.random()}
+            href={`#user-content-${item.level}`}
+            title={item.text}
+          >
+
+          </Link>
+        </Anchor>
+      )
+      // }
     })
   }
 
@@ -126,7 +132,7 @@ const articleDetail: React.FC = () => {
                 </div>
                 <Divider />
 
-                <Comment />
+                <Comment article_id={match?.params.article_id} />
               </>
             )}
           </div>
@@ -134,52 +140,54 @@ const articleDetail: React.FC = () => {
         <Col xs={0} sm={0} md={0} lg={7}>
           {!loading && (
             <Affix offsetTop={80}>
-              <h3 style={{ margin: '0 0 20px 20px' }}>文章目录</h3>
-              {renderAnchor()}
-              <ul className="panel">
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <li className="panel-item zan" onClick={handleLike}>
-                    <svg className="icon">
-                      <use xlinkHref="#icon-yanjingliulankeshi" />
-                    </svg>
+              <div>
+                <h3 style={{ margin: '0 0 20px 20px' }}>文章目录</h3>
+                {renderAnchor()}
+                <ul className="panel">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <li className="panel-item zan" onClick={handleLike}>
+                      <svg className="icon">
+                        <use xlinkHref="#icon-yanjingliulankeshi" />
+                      </svg>
+                    </li>
+                    <span style={{ marginLeft: 10, color: '#777777' }}>
+                      当前已被围观
+                      <strong className="primary">{data?.data.article_view}</strong>次
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <li className="panel-item zan" onClick={handleLike}>
+                      <LikeOutlined className={liked ? 'active zan' : 'zan'} />
+                    </li>
+                    <span style={{ marginLeft: 10, color: '#777777' }}>
+                      当前已获得
+                      <strong className={liked ? 'active primary' : 'primary'}>{likesNum}</strong>
+                      人点赞
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <li className="panel-item">
+                      <svg className="icon">
+                        <use xlinkHref="#icon-pinglun" />
+                      </svg>
+                    </li>
+                    <span style={{ marginLeft: 10, color: '#777777' }}>
+                      当计<strong className="primary">0</strong> 条评论
+                    </span>
+                  </div>
+                  <li className="panel-item">
+                    <GithubFilled className="icon" />
                   </li>
-                  <span style={{ marginLeft: 10, color: '#777777' }}>
-                    当前已被围观
-                    <strong className="primary">{data?.data.article_view}</strong>次
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <li className="panel-item zan" onClick={handleLike}>
-                    <LikeOutlined className={liked ? 'active zan' : 'zan'} />
+                  <li className="panel-item">
+                    <WechatFilled className="icon" style={{ color: 'green' }} />
                   </li>
-                  <span style={{ marginLeft: 10, color: '#777777' }}>
-                    当前已获得
-                    <strong className={liked ? 'active primary' : 'primary'}>{likesNum}</strong>
-                    人点赞
-                  </span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
                   <li className="panel-item">
                     <svg className="icon">
-                      <use xlinkHref="#icon-pinglun" />
+                      <use xlinkHref="#icon-juejin" />
                     </svg>
                   </li>
-                  <span style={{ marginLeft: 10, color: '#777777' }}>
-                    当计<strong className="primary">0</strong> 条评论
-                  </span>
-                </div>
-                <li className="panel-item">
-                  <GithubFilled className="icon" />
-                </li>
-                <li className="panel-item">
-                  <WechatFilled className="icon" style={{ color: 'green' }} />
-                </li>
-                <li className="panel-item">
-                  <svg className="icon">
-                    <use xlinkHref="#icon-juejin" />
-                  </svg>
-                </li>
-              </ul>
+                </ul>
+              </div>
             </Affix>
           )}
         </Col>

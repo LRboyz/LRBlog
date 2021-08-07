@@ -37,7 +37,7 @@ const ArticleList: React.FC = () => {
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const { isLoading, list, total } = useSelector((state: RootState) => state.article)
 
-  console.log(list.length, total)
+  // console.log(list.length, total)
   const next = list.length >= total ? false : true
 
   useEffect(() => {
@@ -126,8 +126,8 @@ const ArticleList: React.FC = () => {
               {btnLoading
                 ? '正在玩命加载中.....'
                 : next
-                ? '加载更多'
-                : '肥肠抱歉，木有更多文章了...(～￣▽￣)～😿'}
+                  ? '加载更多'
+                  : '肥肠抱歉，木有更多文章了...(～￣▽￣)～😿'}
             </span>
           </Button>
         )}
@@ -212,4 +212,4 @@ const ArticleList: React.FC = () => {
   )
 }
 
-export default React.memo(ArticleList)
+export default ArticleList
