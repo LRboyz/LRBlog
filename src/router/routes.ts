@@ -5,7 +5,7 @@ import { HOME } from "./constants";
 import { IRouteProps } from "./types";
 import LayoutPage from "@/view/Layout";
 import aboutPage from "@/view/about";
-import personPage from "@/view/person";
+import personPage from "@/view/about";
 import blogPage from "@/view/blog";
 import blogDetail from "@/components/article/detail";
 
@@ -22,7 +22,7 @@ const routesMap: IRouteProps[] = [
     childrenRoutes: [
       {
         path: HOME.INDEX.path,
-        component: personPage,
+        component: blogPage,
         exact: true,
         meta: {
           title: HOME.INDEX.name,
@@ -36,14 +36,14 @@ const routesMap: IRouteProps[] = [
           title: HOME.ABOUT.name,
         },
       },
-      {
-        path: HOME.BLOG.path,
-        component: blogPage,
-        exact: true,
-        meta: {
-          title: HOME.BLOG.name,
-        },
-      },
+      // {
+      //   path: HOME.BLOG.path,
+      //   component: blogPage,
+      //   exact: true,
+      //   meta: {
+      //     title: HOME.BLOG.name,
+      //   },
+      // },
       {
         path: HOME.BLOG_CATEGORY.path,
         component: blogPage,

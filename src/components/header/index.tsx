@@ -1,6 +1,6 @@
 import './style.less'
 import React, { useState } from 'react'
-import { Switch, useDarkreader } from 'react-darkreader'
+import { Switch } from 'react-darkreader'
 import { Button, Layout, Menu, Popover, Radio, Row, Col } from 'antd'
 import { Link } from 'react-router-dom'
 import logo from '@/assets/image/common/logo.png'
@@ -8,17 +8,21 @@ import logo_light from '@/assets/image/common/logo_light.png'
 import LoginModal from '../login/login.component'
 import { useHistory } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/store'
+import { setTheme } from '@/store/systemSlice'
 
 const Header: React.FC = () => {
   const [useLoginModal, setLoginModal] = useState(false)
-  const [isDark, { toggle }] = useDarkreader()
+  const dispatch = useDispatch()
+  // const [isDark, { toggle }] = useDarkreader()
   const history = useHistory()
   const { Header } = Layout
+  const { isDark } = useSelector((state: RootState) => state.system)
 
   // 修改主题
   const changeTheme = () => {
-    console.log(isDark, '哈哈哈')
-    toggle()
+    // dispatch(setTheme())
   }
 
   // 主题面板
@@ -72,21 +76,21 @@ const Header: React.FC = () => {
         <div style={{ flex: 1 }}></div>
         <div className="btn-group">
           {/* 主题面板 */}
-          <Popover content={themePanel}>
+          {/* <Popover content={themePanel}>
             <svg style={{ width: 16, height: 16, marginTop: 2 }}>
               <use xlinkHref="#icon-zhuti1" />
             </svg>
-          </Popover>
-          {/* <Switch checked={isDark} onChange={toggle} styling="github" /> */}
+          </Popover> */}
+          <Switch checked={isDark} onChange={changeTheme} styling="github" />
         </div>
         <Col xs={0} sm={0} md={0} lg={6}>
           <Menu className="nav" mode="horizontal" defaultSelectedKeys={[history.location.pathname]}>
             <Menu.Item key="/">
               <Link to="/">首页</Link>
             </Menu.Item>
-            <Menu.Item key="/blog">
+            {/* <Menu.Item key="/blog">
               <Link to="/blog">博客</Link>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="/about">
               <Link to="/about">关于我</Link>
             </Menu.Item>

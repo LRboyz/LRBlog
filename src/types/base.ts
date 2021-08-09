@@ -21,6 +21,7 @@ export type articleType = {
   description: string
   article_category: categoryType[]
   article_tag: tagType[]
+  article_comment: commentType[]
 }
 export type categoryType = {
   _id: string

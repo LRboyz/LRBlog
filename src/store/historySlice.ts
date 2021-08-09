@@ -18,7 +18,7 @@ const historySlice = createSlice({
     ...initialHistoryState,
   },
   reducers: {
-    setInitialState: (state) => {
+    setInitialHistoryState: (state) => {
       const initState = Cookies.getJSON('history') || {}
       return {
         ...state,
@@ -31,10 +31,10 @@ const historySlice = createSlice({
       state.articles.push(action.payload)
       Cookies.set('history', { ...state })
     },
-    handleLikeComment: (state) => {},
+    handleLikeComment: (state) => { },
   },
 })
 
-export const { handleLikeArticle, setInitialState } = historySlice.actions
+export const { handleLikeArticle, setInitialHistoryState } = historySlice.actions
 
 export default historySlice

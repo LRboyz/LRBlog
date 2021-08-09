@@ -59,7 +59,7 @@ const articleDetail: React.FC = () => {
       ],
     }).processSync(data?.data.content!)
 
-    console.log(Toc(hast))
+    // console.log(Toc(hast))
     return Toc(hast).map((item: any, key: number) => {
       // if (item.tagName === 'h2') {
       return (
