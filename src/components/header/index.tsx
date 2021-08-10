@@ -1,6 +1,6 @@
 import './style.less'
 import React, { useState } from 'react'
-import { Switch } from 'react-darkreader'
+import { Switch, useDarkreader } from 'react-darkreader'
 import { Button, Layout, Menu, Popover, Radio, Row, Col } from 'antd'
 import { Link } from 'react-router-dom'
 import logo from '@/assets/image/common/logo.png'
@@ -15,13 +15,14 @@ import { setTheme } from '@/store/systemSlice'
 const Header: React.FC = () => {
   const [useLoginModal, setLoginModal] = useState(false)
   const dispatch = useDispatch()
-  // const [isDark, { toggle }] = useDarkreader()
+  const [isDark, { toggle }] = useDarkreader(false)
   const history = useHistory()
   const { Header } = Layout
-  const { isDark } = useSelector((state: RootState) => state.system)
+  // const { isDark } = useSelector((state: RootState) => state.system)
 
   // 修改主题
   const changeTheme = () => {
+    toggle()
     // dispatch(setTheme())
   }
 

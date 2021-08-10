@@ -23,3 +23,12 @@ export const disableReactDevTools = (): void => {
 }
 
 
+// 数组转树（评论区）
+
+export const arrayToTree = (list: any, pid: any) => {
+    let flag = list.filter((item: any) => item.pid === pid)
+    return flag.length === 0 ? [] : flag.map(i => {
+        let obj = 
+    })
+}
+

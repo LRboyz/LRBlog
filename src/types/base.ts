@@ -47,6 +47,7 @@ export type commentType = {
     email: string
     site: string
   },
+  childrens: [commentType]
   comment_content: string
   pid: string
   agent: string

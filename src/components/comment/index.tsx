@@ -1,8 +1,8 @@
 import React, { createElement, useEffect, useState, useRef } from 'react'
-import { Comment, Tooltip, Avatar, List, Form, Input, Button, message } from 'antd'
+import { Comment, Tooltip, Avatar, List, Form, Input, Button, message, Skeleton } from 'antd'
 import { LikeFilled, LikeOutlined } from '@ant-design/icons'
 import './style.less'
-import { getCommentData, postCommentData } from '@/services/api/comment'
+import { getCommentData, postCommentData, postReplyCommentData } from '@/services/api/comment'
 import { commentType } from '@/types/base'
 import { scrollToElem } from '@/utils/scroll'
 
@@ -14,14 +14,13 @@ const comment: React.FC<Props> = ({ article_id }) => {
   const [likes, setLikes] = useState(0)
   const [dislikes, setDislikes] = useState(0)
   const [loading, setLoading] = useState<boolean>(false)
+  const [submitting, setSubmitting] = useState<boolean>(false)
   const [replyed, setReplyed] = useState<boolean>(false)
   const [currentPlaceHolder, setCurrentPlaceHolder] = useState<string>('写下你的评论...')
-  // const [showReplyInput, setReplyInput] = useState<boolean>(false)
   const [action, setAction] = useState<string | null>(null)
   const [currentCommentId, setCurrentCommentId] = useState<string>("")
   const [value, setValue] = useState("")
   const [comments, setComments] = useState<commentType[]>([])
-  const { TextArea } = Input
   const [form] = Form.useForm()
   const inputRef = useRef<Input | null>(null)
 
@@ -39,9 +38,13 @@ const comment: React.FC<Props> = ({ article_id }) => {
   })
 
   const fetchCommentList = async () => {
+    setLoading(true)
     await getCommentData(article_id).then(res => {
       setComments(res.data)
       setCommentTotal(res.total)
+      setLoading(false)
+    }).catch(err => {
+      setLoading(false)
     })
   }
 
@@ -57,26 +60,16 @@ const comment: React.FC<Props> = ({ article_id }) => {
     setAction('disliked')
   }
   const handleReply = (item: commentType) => {
-    // console.log("comment_id:", comment_id)
-    setReplyed(!replyed)
-    setCurrentCommentId(old => item._id)
-    // scrollToElem('.ant-input', 500, -240)
+    if (item._id === currentCommentId) {
+      setReplyed(false)
+      return
+    }
+    setReplyed(true)
+    setCurrentCommentId(item._id)
     setCurrentPlaceHolder(`回复${item.comment_author.name}:`)
-
-    // const Ref = inputRef.current as any
-    // // Ref.setValue("")
-    // inputRef.current.focus()
-    // document.getElementById("#myInput")?.focus()
-    // focus 输入框
-    // document.getElementById('comment-textarea').focus()
-  }
-  const handleChange = (e: any) => {
-    // console.log(e, 'e')
-    setValue(old => e.target.value)
   }
   const handleSubmit = async (values: any) => {
-    // console.log(values, 'values')
-    const commentInfo = {
+    let commentInfo = {
       ...values,
       article_id,
       comment_author: {
@@ -84,27 +77,101 @@ const comment: React.FC<Props> = ({ article_id }) => {
         email: `用户${Math.random() * 100}@github.com`
       }
     }
-
-    setLoading(true)
+    // console.log(values, 'values')
+    if (values.reply_content) {
+      console.log("回复评论")
+      commentInfo = {
+        ...values,
+        comment_content: values.reply_content,
+        pid: currentCommentId,
+        comment_author: {
+          name: `用户${Math.random() * 100}`,
+          email: `用户${Math.random() * 100}@github.com`
+        }
+      }
+    }
+    await postComment(commentInfo)
+  }
+  // 发送评论
+  const postComment = async (commentData: any) => {
+    setSubmitting(true)
     try {
-      await postCommentData(commentInfo)
+      await postCommentData(commentData)
       await getCommentData(article_id).then(res => {
         // console.log(res)
         setComments(res.data)
-        setLoading(false)
+        setSubmitting(false)
         message.success("发布评论成功！")
+        form.resetFields()
       })
     } catch (error) {
       console.error(error, 'error')
       message.error("评论失败！")
-      setLoading(false)
+      setSubmitting(false)
     }
   }
 
-  const handleFocus = () => {
-    setCurrentCommentId('')
-    setCurrentPlaceHolder('')
-  }
+  const commentItem = (comment: commentType) => (
+    <Comment
+      key={comment._id}
+      // actions={actions}
+      author={<span>{comment.comment_author.name}</span>}
+      avatar={
+        <Avatar
+          src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4221a1e99ec6e23bc4c6c4716bb6d3ea~300x300.image"
+          alt="avatar"
+          size="default"
+
+        />
+      }
+      content={
+        <div style={{ width: '100%' }}>
+          <div style={{ padding: '10px 0' }}> {comment.comment_content}</div>
+          <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+            <Tooltip key="comment-basic-like" title="赞" >
+              <div onClick={like} className="likes">
+                <svg className="icon">
+                  <use xlinkHref="#icon-dianzan-copy-copy" />
+                </svg>
+                &nbsp;
+                <span >{1}</span>
+              </div>
+            </Tooltip>
+            <span className="reply-btn" onClick={() => handleReply(comment)}>{replyed && comment._id === currentCommentId ? '取消回复' : '回复'}</span>
+          </div>
+
+          {
+            replyed && comment._id === currentCommentId && (
+              <Comment
+                content={
+                  <>
+                    <Form.Item name="reply_content">
+                      <Input ref={inputRef} placeholder={currentPlaceHolder} />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button htmlType="submit" loading={submitting} type="primary">
+                        {submitting ? "发送中" : "发送"}
+                      </Button>
+                    </Form.Item>
+                  </>
+                }
+
+              />
+            )
+          }
+        </div>
+      }>
+      {
+        comment.childrens && comment.childrens.map((item, key) => {
+          return (
+            <div key={key}>
+              {commentItem(item)}
+            </div>
+          )
+        })
+      }
+    </Comment>
+  )
 
   return (
     <div className="comment-container">
@@ -127,8 +194,8 @@ const comment: React.FC<Props> = ({ article_id }) => {
                 <Input placeholder="写下您的评论..." />
               </Form.Item>
               <Form.Item>
-                <Button htmlType="submit" loading={loading} type="primary">
-                  {loading ? "发布中" : "发布"}
+                <Button htmlType="submit" type="primary">
+                  发布
                 </Button>
               </Form.Item>
             </>
@@ -136,61 +203,19 @@ const comment: React.FC<Props> = ({ article_id }) => {
 
         />
         {
-          comments.length > 0 && (
-            <div className="comment-list">
-              {
+
+          <div className="comment-list">
+            {
+              loading ? <Skeleton /> : (
                 comments.map(comment => {
                   return (
-                    <Comment
-                      key={comment._id}
-                      // actions={actions}
-                      author={<span>{comment.comment_author.name}</span>}
-                      avatar={
-                        <Avatar
-                          src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4221a1e99ec6e23bc4c6c4716bb6d3ea~300x300.image"
-                          alt="avatar"
-                          size="default"
-
-                        />
-                      }
-                      content={
-                        <div style={{ width: '100%' }}>
-                          <div style={{ padding: '10px 0' }}> {comment.comment_content}</div>
-                          <Tooltip key="comment-basic-like" title="赞" >
-                            <span onClick={like} className="like">
-                              {createElement(action === 'liked' ? LikeFilled : LikeOutlined)}&nbsp;
-                              <span className="comment-action">{likes}</span>
-                            </span>
-                          </Tooltip>
-                          <span className="reply-btn" onClick={() => handleReply(comment)}>{replyed && comment._id === currentCommentId ? '取消回复' : '回复'}</span>
-                          {
-                            replyed && comment._id === currentCommentId && (
-                              <Comment
-                                content={
-                                  <>
-                                    <Form.Item name="comment_content">
-                                      <Input ref={inputRef} placeholder={currentPlaceHolder} />
-                                    </Form.Item>
-                                    <Form.Item>
-                                      <Button htmlType="submit" loading={loading} type="primary">
-                                        {loading ? "发布中" : "发布"}
-                                      </Button>
-                                    </Form.Item>
-                                  </>
-                                }
-
-                              />
-                            )
-                          }
-                        </div>
-                      }
-
-                    />
+                    commentItem(comment)
                   )
                 })
-              }
-            </div>
-          )
+              )
+            }
+          </div>
+
         }
       </Form>
     </div >

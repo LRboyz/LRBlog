@@ -145,34 +145,44 @@ const articleDetail: React.FC = () => {
                 {renderAnchor()}
                 <ul className="panel">
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <li className="panel-item zan" onClick={handleLike}>
+                    <li className="panel-item zan" >
                       <svg className="icon">
-                        <use xlinkHref="#icon-yanjingliulankeshi" />
+                        <use xlinkHref="#icon-yanjingliulankeshi-copy" />
                       </svg>
                     </li>
                     <span style={{ marginLeft: 10, color: '#777777' }}>
                       当前已被围观
-                      <strong className="primary">{data?.data.article_view}</strong>次
+                      <strong className="black">{data?.data.article_view}</strong>次
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <li className="panel-item zan" onClick={handleLike}>
-                      <LikeOutlined className={liked ? 'active zan' : 'zan'} />
+                      {
+                        liked ? <svg className="zan icon">
+                          <use xlinkHref="#icon-dianzan" />
+                        </svg> : <svg className="zan icon">
+                          <use xlinkHref="#icon-dianzan-copy-copy" />
+                        </svg>
+                      }
+                      {/* <svg className={liked ? 'active icon' : 'zan'}>
+                        <use xlinkHref="#icon-dianzan-copy-copy" />
+                      </svg> */}
+                      {/* <LikeOutlined className={liked ? 'active zan' : 'zan'} /> */}
                     </li>
                     <span style={{ marginLeft: 10, color: '#777777' }}>
                       当前已获得
-                      <strong className={liked ? 'active primary' : 'primary'}>{likesNum}</strong>
+                      <strong className={liked ? 'primary' : 'black'}>{likesNum}</strong>
                       人点赞
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <li className="panel-item">
                       <svg className="icon">
-                        <use xlinkHref="#icon-pinglun" />
+                        <use xlinkHref="#icon-pinglun-copy" />
                       </svg>
                     </li>
                     <span style={{ marginLeft: 10, color: '#777777' }}>
-                      当计<strong className="primary">0</strong> 条评论
+                      当前共&nbsp;<strong className="black">0</strong> 条评论
                     </span>
                   </div>
                   <li className="panel-item">
