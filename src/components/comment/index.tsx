@@ -5,6 +5,7 @@ import './style.less'
 import { getCommentData, postCommentData, postReplyCommentData } from '@/services/api/comment'
 import { commentType } from '@/types/base'
 import { scrollToElem } from '@/utils/scroll'
+import { arrayToTree } from '@/utils'
 
 type Props = {
   article_id: string
@@ -15,19 +16,16 @@ const comment: React.FC<Props> = ({ article_id }) => {
   const [dislikes, setDislikes] = useState(0)
   const [loading, setLoading] = useState<boolean>(false)
   const [submitting, setSubmitting] = useState<boolean>(false)
-  const [replyed, setReplyed] = useState<boolean>(false)
+  const [modalVisibility, setModalVisibility] = useState<{ [propsName: string]: boolean }>({})
   const [currentPlaceHolder, setCurrentPlaceHolder] = useState<string>('写下你的评论...')
   const [action, setAction] = useState<string | null>(null)
   const [currentCommentId, setCurrentCommentId] = useState<string>("")
-  const [value, setValue] = useState("")
   const [comments, setComments] = useState<commentType[]>([])
   const [form] = Form.useForm()
   const inputRef = useRef<Input | null>(null)
 
   useEffect(() => {
-    // setComments(commentData!)
     fetchCommentList()
-
   }, [])
 
   useEffect(() => {
@@ -37,10 +35,19 @@ const comment: React.FC<Props> = ({ article_id }) => {
     }
   })
 
+  const toggleModal = (comment_id: string) => {
+    setModalVisibility((prevState: any) => {
+      const newState = { ...prevState }
+      newState[comment_id] = newState[comment_id] ? false : true
+      return newState
+    })
+    console.log(modalVisibility, 'visit')
+  }
+
   const fetchCommentList = async () => {
     setLoading(true)
     await getCommentData(article_id).then(res => {
-      setComments(res.data)
+      setComments(arrayToTree(res.data))
       setCommentTotal(res.total)
       setLoading(false)
     }).catch(err => {
@@ -60,12 +67,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
     setAction('disliked')
   }
   const handleReply = (item: commentType) => {
-    if (item._id === currentCommentId) {
-      setReplyed(false)
-      return
-    }
-    setReplyed(true)
-    setCurrentCommentId(item._id)
+    toggleModal(item._id)
     setCurrentPlaceHolder(`回复${item.comment_author.name}:`)
   }
   const handleSubmit = async (values: any) => {
@@ -137,11 +139,13 @@ const comment: React.FC<Props> = ({ article_id }) => {
                 <span >{1}</span>
               </div>
             </Tooltip>
-            <span className="reply-btn" onClick={() => handleReply(comment)}>{replyed && comment._id === currentCommentId ? '取消回复' : '回复'}</span>
+            <span className="reply-btn" onClick={() => handleReply(comment)}>
+              {modalVisibility[comment._id] ? '取消回复' : '回复'}
+            </span>
           </div>
 
           {
-            replyed && comment._id === currentCommentId && (
+            modalVisibility[comment._id] && (
               <Comment
                 content={
                   <>
@@ -162,7 +166,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
         </div>
       }>
       {
-        comment.childrens && comment.childrens.map((item, key) => {
+        comment.children && comment.children.map((item, key) => {
           return (
             <div key={key}>
               {commentItem(item)}

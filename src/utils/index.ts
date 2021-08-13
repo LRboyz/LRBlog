@@ -25,10 +25,16 @@ export const disableReactDevTools = (): void => {
 
 // 数组转树（评论区）
 
-export const arrayToTree = (list: any, pid: any) => {
-    let flag = list.filter((item: any) => item.pid === pid)
-    return flag.length === 0 ? [] : flag.map(i => {
-        let obj = 
+export const arrayToTree = (data: Array<any>) => {
+    let result = [] as any
+    data.forEach(item => {
+        if (!item.pid) {
+            result.push(item)
+        } else {
+            const parent = data.find(son => son._id === item.pid._id)
+            Array.isArray(parent.children) ? parent.children.push(item) : parent.children = [item]
+        }
     })
+    console.log(result, 'result')
+    return result
 }
-
