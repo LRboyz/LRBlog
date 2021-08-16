@@ -49,7 +49,7 @@ export type commentType = {
   },
   children: [commentType]
   comment_content: string
-  pid: string
+  pid: commentType
   agent: string
   comment_like: number
   ip: string

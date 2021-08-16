@@ -97,13 +97,12 @@ const Header: React.FC = () => {
             </Menu.Item>
           </Menu>
         </Col>
-        {/*<Button*/}
-        {/*    shape="round"*/}
-        {/*    onClick={() => setLoginModal(true)}*/}
-        {/*    style={{ marginLeft: 20 }}*/}
-        {/*>*/}
-        {/*  登陆*/}
-        {/*</Button>*/}
+        <Button
+          onClick={() => setLoginModal(true)}
+          style={{ marginLeft: 20 }}
+        >
+          登陆
+        </Button>
       </Header>
       <LoginModal showLogin={useLoginModal} closeLogin={() => setLoginModal(false)} />
     </div>

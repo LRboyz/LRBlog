@@ -1,6 +1,6 @@
 import React from 'react'
 import './less/login.less'
-import cowPicture from '@/assets/image/common/cow.png'
+import desc from '@/assets/image/common/desc.png'
 import { Modal, Button, Form, Checkbox, Input } from 'antd'
 import { CloseCircleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons'
 
@@ -27,15 +27,22 @@ function LoginModal(props: Props) {
   // 视图层
   return (
     <div className="login">
-      <Modal closeIcon={<CloseCircleOutlined />} width="350px" title="登陆" visible={showLogin} onCancel={() => props.closeLogin()} footer={null}>
-        <img src={cowPicture} alt="cow" style={{ position: 'absolute', width: '100px', height: '100px', top: '-55px', left: '50%', transform: 'translate(-50px)' }} />
+      <Modal
+        closeIcon={<CloseCircleOutlined />}
+        width="350px"
+        title="登陆"
+        visible={showLogin}
+        onCancel={() => props.closeLogin()}
+        maskStyle={{ backdropFilter: 'blur(3px)' }}
+        footer={null}>
+        <img src={desc} alt="cow" style={{ position: 'absolute', width: '180px', top: '-55px', left: '40%', transform: 'translate(-50px)' }} />
         <Form name="basic" initialValues={{ remember: true }}>
           <Form.Item
             // label="用户名"
             name="username"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input prefix={<UserOutlined />} placeholder="用户名或手机号"/>
+            <Input prefix={<UserOutlined />} placeholder="用户名或手机号" />
           </Form.Item>
 
           <Form.Item
@@ -43,21 +50,24 @@ function LoginModal(props: Props) {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password prefix={<LockOutlined />} placeholder="请输入您的密码"/>
+            <Input.Password prefix={<LockOutlined />} placeholder="请输入您的密码" />
           </Form.Item>
 
-          <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
+          <div>
+            <span>
+              没有账号? &nbsp;
+              <a>去注册</a>
+            </span>
+          </div>
           <Form.Item>
-            <Button shape="round" htmlType="submit" style={{ display: 'block', margin: '0 auto' }}>
+            <Button htmlType="submit" style={{ display: 'block', margin: '0 auto' }}>
               登陆
             </Button>
           </Form.Item>
         </Form>
       </Modal>
     </div>
-  );
+  )
 }
 
 type Props = {
@@ -65,4 +75,4 @@ type Props = {
   closeLogin: () => void;
 };
 
-export default React.memo(LoginModal);
+export default React.memo(LoginModal)

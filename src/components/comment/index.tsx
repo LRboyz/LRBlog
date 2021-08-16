@@ -127,8 +127,16 @@ const comment: React.FC<Props> = ({ article_id }) => {
         />
       }
       content={
-        <div style={{ width: '100%' }}>
-          <div style={{ padding: '10px 0' }}> {comment.comment_content}</div>
+        <div style={{ padding: 10 }}>
+          <div style={{ padding: '10px 0' }}>
+            {
+              comment.pid && (
+                <span>回复&nbsp;
+                  <span style={{ color: '#406599' }}>{comment.pid.comment_author.name}:</span>
+                </span>)
+            }
+            <span>{comment.comment_content}</span>
+          </div>
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <Tooltip key="comment-basic-like" title="赞" >
               <div onClick={like} className="likes">
@@ -168,7 +176,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
       {
         comment.children && comment.children.map((item, key) => {
           return (
-            <div key={key}>
+            <div key={key} style={{ background: '#fafbfc' }}>
               {commentItem(item)}
             </div>
           )

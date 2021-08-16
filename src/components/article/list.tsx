@@ -13,7 +13,7 @@ import { articleType } from '@/types/base'
 import { getArticleList } from '@/services/api/article'
 import { useRequest } from 'ahooks'
 import { formatTime } from '@/utils'
-import dog from '@/assets/image/common/dog.jpg'
+import nodata from '@/assets/image/common/nodata.png'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '@/store'
 import {
@@ -127,7 +127,7 @@ const ArticleList: React.FC = () => {
                 ? '正在玩命加载中.....'
                 : next
                   ? '加载更多'
-                  : '肥肠抱歉，木有更多文章了...(～￣▽￣)～😿'}
+                  : '(～￣▽￣)～到底了...'}
             </span>
           </Button>
         )}
@@ -191,7 +191,7 @@ const ArticleList: React.FC = () => {
         locale={{
           emptyText: (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <img src={dog} alt="" style={{ width: 60, height: 60 }} />
+              <img src={nodata} alt="" style={{ width: 80, }} />
               然鹅并没有文章 ~
             </div>
           ),
