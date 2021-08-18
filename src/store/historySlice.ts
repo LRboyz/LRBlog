@@ -2,7 +2,7 @@ import { updateArticleZan } from '@/services/cloudbase'
 import { createSlice } from '@reduxjs/toolkit'
 import Cookies from 'js-cookie'
 
-export type historyState = {
+export interface historyState {
   articles: string[]
   comments: string[]
 }

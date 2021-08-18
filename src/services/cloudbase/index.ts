@@ -32,3 +32,19 @@ export const updateArticleZan = async (article_id: string) => {
   }
 }
 
+// 查询用户身份是否正确
+export const queryUserAuth = async (form: { username: string, user_pwd: string }): Promise<any> => {
+  try {
+    return db.collection("blog_user").where(form).count()
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const queryUserInfo = async (form: { username: string, user_pwd: string }) => {
+  try {
+    return db.collection("blog_user").where(form).get()
+  } catch (error) {
+
+  }
+}

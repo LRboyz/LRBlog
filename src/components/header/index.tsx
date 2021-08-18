@@ -10,7 +10,6 @@ import { useHistory } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store'
-import { setTheme } from '@/store/systemSlice'
 
 const Header: React.FC = () => {
   const [useLoginModal, setLoginModal] = useState(false)
@@ -104,7 +103,10 @@ const Header: React.FC = () => {
           登陆
         </Button>
       </Header>
-      <LoginModal showLogin={useLoginModal} closeLogin={() => setLoginModal(false)} />
+      <LoginModal showLogin={useLoginModal} closeLogin={() => {
+        console.log("触发")
+        setLoginModal(false)
+      }} />
     </div>
   )
 }

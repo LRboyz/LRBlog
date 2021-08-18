@@ -64,14 +64,14 @@ const HotArticleList: React.FC = () => {
                     active
                     avatar={{ size: 'small', shape: 'square' }}
                     title={false}
-                    // paragraph={{ rows: 1 }}
+                  // paragraph={{ rows: 1 }}
                   />
                 )
               })}
             </div>
           )}
           {/* 空数据 */}
-          {data?.data.length === 0 && !loading && (
+          {data?.data.length === 0 && !loading || error && (
             <Empty
               description={<span className="fs-xs empty">暂无文章......(～￣▽￣)～</span>}
               image={Empty.PRESENTED_IMAGE_SIMPLE}

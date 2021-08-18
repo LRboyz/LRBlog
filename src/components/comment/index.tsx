@@ -1,11 +1,23 @@
-import React, { createElement, useEffect, useState, useRef } from 'react'
-import { Comment, Tooltip, Avatar, List, Form, Input, Button, message, Skeleton } from 'antd'
-import { LikeFilled, LikeOutlined } from '@ant-design/icons'
-import './style.less'
-import { getCommentData, postCommentData, postReplyCommentData } from '@/services/api/comment'
-import { commentType } from '@/types/base'
-import { scrollToElem } from '@/utils/scroll'
+import React, {
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import { arrayToTree } from '@/utils'
+import {
+  Avatar,
+  Button,
+  Comment,
+  Form,
+  Input,
+  message,
+  Skeleton,
+  Tooltip,
+  Divider
+} from 'antd'
+import { commentType } from '@/types/base'
+import { getCommentData, postCommentData } from '@/services/api/comment'
+import './style.less'
 
 type Props = {
   article_id: string
@@ -22,6 +34,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
   const [currentCommentId, setCurrentCommentId] = useState<string>("")
   const [comments, setComments] = useState<commentType[]>([])
   const [form] = Form.useForm()
+  const { TextArea } = Input
   const inputRef = useRef<Input | null>(null)
 
   useEffect(() => {
@@ -35,23 +48,24 @@ const comment: React.FC<Props> = ({ article_id }) => {
     }
   })
 
+
   const toggleModal = (comment_id: string) => {
     setModalVisibility((prevState: any) => {
       const newState = { ...prevState }
       newState[comment_id] = newState[comment_id] ? false : true
       return newState
     })
-    console.log(modalVisibility, 'visit')
+    // console.log(modalVisibility, 'visit')
   }
 
   const fetchCommentList = async () => {
-    setLoading(true)
+    setSubmitting(true)
     await getCommentData(article_id).then(res => {
       setComments(arrayToTree(res.data))
       setCommentTotal(res.total)
-      setLoading(false)
+      setSubmitting(false)
     }).catch(err => {
-      setLoading(false)
+      setSubmitting(false)
     })
   }
 
@@ -68,6 +82,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
   }
   const handleReply = (item: commentType) => {
     toggleModal(item._id)
+    setCurrentCommentId(item._id)
     setCurrentPlaceHolder(`回复${item.comment_author.name}:`)
   }
   const handleSubmit = async (values: any) => {
@@ -99,13 +114,9 @@ const comment: React.FC<Props> = ({ article_id }) => {
     setSubmitting(true)
     try {
       await postCommentData(commentData)
-      await getCommentData(article_id).then(res => {
-        // console.log(res)
-        setComments(res.data)
-        setSubmitting(false)
-        message.success("发布评论成功！")
-        form.resetFields()
-      })
+      await fetchCommentList()
+      message.success("发布评论成功！")
+      form.resetFields()
     } catch (error) {
       console.error(error, 'error')
       message.error("评论失败！")
@@ -117,25 +128,25 @@ const comment: React.FC<Props> = ({ article_id }) => {
     <Comment
       key={comment._id}
       // actions={actions}
-      author={<span>{comment.comment_author.name}</span>}
+      author={<span style={{ color: '#333333', fontSize: 13 }}>{comment.comment_author.name}</span>}
       avatar={
         <Avatar
-          src="https://sf6-ttcdn-tos.pstatp.com/img/user-avatar/4221a1e99ec6e23bc4c6c4716bb6d3ea~300x300.image"
+          src="https://sf1-ttcdn-tos.pstatp.com/img/mosaic-legacy/3793/3131589739~300x300.image"
           alt="avatar"
           size="default"
 
         />
       }
       content={
-        <div style={{ padding: 10 }}>
+        <div >
           <div style={{ padding: '10px 0' }}>
             {
               comment.pid && (
-                <span>回复&nbsp;
-                  <span style={{ color: '#406599' }}>{comment.pid.comment_author.name}:</span>
+                <span>回复
+                  <span style={{ color: '#406599' }}> {comment.pid.comment_author.name}:</span>
                 </span>)
             }
-            <span>{comment.comment_content}</span>
+            <span style={{ marginLeft: 10 }}>{comment.comment_content}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <Tooltip key="comment-basic-like" title="赞" >
@@ -144,7 +155,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
                   <use xlinkHref="#icon-dianzan-copy-copy" />
                 </svg>
                 &nbsp;
-                <span >{1}</span>
+                {/* <span >{1}</span> */}
               </div>
             </Tooltip>
             <span className="reply-btn" onClick={() => handleReply(comment)}>
@@ -203,7 +214,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
           content={
             <>
               <Form.Item name="comment_content">
-                <Input placeholder="写下您的评论..." />
+                <TextArea rows={2} placeholder="写下您的评论..." />
               </Form.Item>
               <Form.Item>
                 <Button htmlType="submit" type="primary">
@@ -212,8 +223,10 @@ const comment: React.FC<Props> = ({ article_id }) => {
               </Form.Item>
             </>
           }
-
         />
+
+        <Divider />
+        <h3 style={{ fontWeight: 'bold' }}>评论区({commentTotal}条评论)</h3>
         {
 
           <div className="comment-list">

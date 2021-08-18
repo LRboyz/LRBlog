@@ -14,7 +14,7 @@ const About: React.FC = () => {
                         src={avatar}
                         preview={false}
                     />
-                    <div className="face"></div>
+
                 </div>
                 <h2>LRboy</h2>
                 <p>Full Stack Developer & WEB Security Enthusiasts</p>

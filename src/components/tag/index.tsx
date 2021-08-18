@@ -1,16 +1,16 @@
-import { useRequest } from "ahooks";
-import "./style.less";
-import { Empty, Skeleton } from "antd";
-import React from "react";
+import { useRequest } from "ahooks"
+import "./style.less"
+import { Empty, Skeleton } from "antd"
+import React from "react"
 
-import { getTagList } from "@/services/api/tag";
+import { getTagList } from "@/services/api/tag"
 
 const TagList: React.FC = () => {
-  // const loading = props.loading === Status.inProgress ? true : false;
+  // const loading = props.loading === Status.inProgress ? true : false
   const { data, error, loading } = useRequest(async () => {
     // console.log(data, 'data...')
-    return await getTagList();
-  });
+    return await getTagList()
+  })
   return (
     <div>
       <div className="tag-container">
@@ -30,12 +30,12 @@ const TagList: React.FC = () => {
               >
                 {item.tag_name}
               </div>
-            );
+            )
           })}
           <div style={{ width: "100%", paddingTop: "10px" }}>
             {loading && <Skeleton loading={loading} active title={false} />}
             {/* 空数据 */}
-            {data?.data.length === 0 && !loading && (
+            {data?.data.length === 0 && !loading || error && (
               <Empty
                 description={
                   <span className="fs-xs empty">暂无标签......(～￣▽￣)～</span>
@@ -47,11 +47,11 @@ const TagList: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 // type Props = {
-//   tagList: Array<any>;
-//   loading: Status;
-// };
-export default React.memo(TagList);
+//   tagList: Array<any>
+//   loading: Status
+// }
+export default React.memo(TagList)

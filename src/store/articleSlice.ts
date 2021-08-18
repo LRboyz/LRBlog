@@ -2,7 +2,7 @@ import { getArticleList, getArticleListByCategory } from '@/services/api/article
 import { articleType } from '@/types/base'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-export type articleState = {
+export interface articleState {
   isLoading: boolean
   list: articleType[]
   total: number
@@ -14,6 +14,7 @@ export const articleInitState: articleState = {
   total: 0,
 }
 
+ /*********** Async Function  ************/
 export const getArticles = createAsyncThunk('article/getArticleList', async (params: any) => {
   const res = await getArticleList(params)
   return res
@@ -41,6 +42,7 @@ export const getMoreArticlesByCategory = createAsyncThunk(
     return res
   }
 )
+/******************************************/
 
 const articleSlice = createSlice({
   name: 'article',

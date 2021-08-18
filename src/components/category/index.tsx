@@ -55,7 +55,7 @@ const Category: React.FC = () => {
           </div>
         )}
         {/* 空数据 */}
-        {data?.data.length === 0 && !loading && (
+        {data?.data.length === 0 && !loading || error && (
           <Empty
             description={
               <span className="fs-xs empty">暂无分类......(～￣▽￣)～</span>

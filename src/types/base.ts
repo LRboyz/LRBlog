@@ -54,3 +54,8 @@ export type commentType = {
   comment_like: number
   ip: string
 }
+
+export type avatarType = {
+  avatar_name: string;
+  avatar_image: string;
+}
