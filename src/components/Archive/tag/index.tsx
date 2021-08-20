@@ -1,5 +1,5 @@
 import { useRequest } from "ahooks"
-import "./style.less"
+import styles from "./style.module.less"
 import { Empty, Skeleton } from "antd"
 import React from "react"
 
@@ -13,15 +13,15 @@ const TagList: React.FC = () => {
   })
   return (
     <div>
-      <div className="tag-container">
-        <div className="tag-header">
-          <span className="tag-title">标签</span>
+      <div className={styles.tagWrapper}>
+        <div className={styles.tagHeader}>
+          <span className={styles.tagTitle}>标签</span>
         </div>
-        <div className="tag-group">
+        <div className={styles.tagGroup}>
           {data?.data.map((item, index) => {
             return (
               <div
-                className="tag-item desc"
+                className={styles.tagItem && styles.desc}
                 key={item._id}
                 style={{
                   background: item.tag_color, // '#' + Math.random().toString(16).slice(2, 8),
@@ -38,7 +38,7 @@ const TagList: React.FC = () => {
             {data?.data.length === 0 && !loading || error && (
               <Empty
                 description={
-                  <span className="fs-xs empty">暂无标签......(～￣▽￣)～</span>
+                  <span>暂无标签......(～￣▽￣)～</span>
                 }
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
               />
@@ -54,4 +54,4 @@ const TagList: React.FC = () => {
 //   tagList: Array<any>
 //   loading: Status
 // }
-export default React.memo(TagList)
+export default TagList

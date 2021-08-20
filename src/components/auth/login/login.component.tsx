@@ -44,18 +44,13 @@ function LoginModal(props: Props) {
       const { total } = await queryUserAuth(value)
       console.log(total, 'result')
       if (total === 0) {
-        notification['error']({
-          message: '登陆失败！',
-          description:
-            '未查询到该账户信息！',
-        });
+        message.error("登录失败！未查询到用户信息")
       } else if (total === 1) {
-        const result = await queryUserInfo(form)
-        console.log(result, '查询结果')
-        // message.success("登陆成功！")
-        // // dispatch(setUserInfo())
-        // form.login.resetFields();
-        // props.closeLogin()
+        const { data } = await queryUserInfo(value)
+        dispatch(setUserInfo(data[0]))
+        message.success("登陆成功！")
+        form.login.resetFields();
+        props.closeLogin()
       } else {
         message.error("登陆失败！")
       }
@@ -185,4 +180,4 @@ function LoginModal(props: Props) {
 
 
 
-export default React.memo(LoginModal)
+export default LoginModal

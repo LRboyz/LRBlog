@@ -7,7 +7,7 @@ import { getCategoryList } from "@/services/api/catetgory"
 import { useHistory, useRouteMatch } from "react-router-dom"
 import { categoryType } from "@/types/base"
 
-const Category: React.FC = () => {
+const CategoryList: React.FC = () => {
   useEffect(() => { })
   const [currentIndex, setCurrentIndex] = React.useState<number>()
   const history = useHistory()
@@ -68,4 +68,4 @@ const Category: React.FC = () => {
   )
 }
 
-export default React.memo(Category)
+export default CategoryList

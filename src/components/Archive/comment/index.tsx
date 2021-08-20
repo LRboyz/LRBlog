@@ -17,7 +17,7 @@ import {
 } from 'antd'
 import { commentType } from '@/types/base'
 import { getCommentData, postCommentData } from '@/services/api/comment'
-import './style.less'
+import styles from './style.module.less'
 
 type Props = {
   article_id: string
@@ -81,8 +81,11 @@ const comment: React.FC<Props> = ({ article_id }) => {
     setAction('disliked')
   }
   const handleReply = (item: commentType) => {
-    toggleModal(item._id)
-    setCurrentCommentId(item._id)
+    if (item._id === currentCommentId) {
+      setCurrentCommentId('')
+    } else {
+      setCurrentCommentId(item._id)
+    }
     setCurrentPlaceHolder(`回复${item.comment_author.name}:`)
   }
   const handleSubmit = async (values: any) => {
@@ -151,20 +154,19 @@ const comment: React.FC<Props> = ({ article_id }) => {
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <Tooltip key="comment-basic-like" title="赞" >
               <div onClick={like} className="likes">
-                <svg className="icon">
+                <svg className={styles.icon}>
                   <use xlinkHref="#icon-dianzan-copy-copy" />
                 </svg>
                 &nbsp;
-                {/* <span >{1}</span> */}
               </div>
             </Tooltip>
-            <span className="reply-btn" onClick={() => handleReply(comment)}>
-              {modalVisibility[comment._id] ? '取消回复' : '回复'}
+            <span className={styles.replyBtn} onClick={() => handleReply(comment)}>
+              {comment._id === currentCommentId ? "取消回复" : "回复"}
             </span>
           </div>
 
           {
-            modalVisibility[comment._id] && (
+            comment._id === currentCommentId && (
               <Comment
                 content={
                   <>
@@ -197,7 +199,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
   )
 
   return (
-    <div className="comment-container">
+    <div className={styles.commentWrapper}>
       <Form form={form} onFinish={handleSubmit}>
 
         <Comment
@@ -228,8 +230,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
         <Divider />
         <h3 style={{ fontWeight: 'bold' }}>评论区({commentTotal}条评论)</h3>
         {
-
-          <div className="comment-list">
+          <div className={styles.commentList}>
             {
               loading ? <Skeleton /> : (
                 comments.map(comment => {

@@ -10,41 +10,42 @@ const _ = db.command
 // 更新浏览量
 export const updateArticleView = async (article_id: string) => {
   try {
-    db.collection('article')
+    await db.collection('article')
       .doc(article_id)
       .update({
         article_view: _.inc(1),
       })
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 // 更新文章点赞数
 export const updateArticleZan = async (article_id: string) => {
   try {
-    db.collection('article')
+    await db.collection('article')
       .doc(article_id)
       .update({
         article_zan: _.inc(1),
       })
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
 // 查询用户身份是否正确
 export const queryUserAuth = async (form: { username: string, user_pwd: string }): Promise<any> => {
   try {
-    return db.collection("blog_user").where(form).count()
+    return await db.collection("blog_user").where(form).count()
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
-export const queryUserInfo = async (form: { username: string, user_pwd: string }) => {
+export const queryUserInfo = async (form: { username: string, user_pwd: string }): Promise<any> => {
+  console.log(form, 'LoginForm')
   try {
-    return db.collection("blog_user").where(form).get()
+    return await db.collection("blog_user").where(form).get()
   } catch (error) {
-
+    console.error(error)
   }
 }

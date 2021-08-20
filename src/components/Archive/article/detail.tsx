@@ -38,7 +38,7 @@ const articleDetail: React.FC = () => {
   // console.log(articles, comments, 'Redux里的数据')
   const { data, loading } = useRequest(() =>
     getArticleDetail(match?.params.article_id).then((res) => {
-      setLikesNum(res.data.article_zan)
+      setLikesNum(res.data.article_zan || 0)
       return res
     })
   )

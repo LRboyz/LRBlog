@@ -1,13 +1,13 @@
-import './style.less'
+import styles from './style.module.less'
 import React from 'react'
 import avatar from '@/assets/image/common/avatar.png'
 import { Image } from 'antd'
 
 const About: React.FC = () => {
     return (
-        <div className="person-wrapper">
-            <div className="card">
-                <div className="avatar-box">
+        <div className={styles.personWrapper}>
+            <div className={styles.card}>
+                <div className={styles.avatarBox}>
                     <Image
                         width={160}
                         height={160}

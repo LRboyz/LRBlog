@@ -3,10 +3,10 @@ import { lazy } from "react";
 import { HOME } from "./constants";
 // import { IRouteProps } from '@/router/types'
 import { IRouteProps } from "./types";
-import LayoutPage from "@/view/Layout";
-import aboutPage from "@/view/about";
-import personPage from "@/view/about";
-import blogPage from "@/view/blog";
+import LayoutPage from "@/page/home";
+import aboutPage from "@/page/about";
+import personPage from "@/page/about";
+import blogPage from "@/page/blog";
 import blogDetail from "@/components/article/detail";
 
 const routesMap: IRouteProps[] = [

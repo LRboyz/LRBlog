@@ -1,23 +1,32 @@
-import './style.less'
+import styles from './style.module.less'
 import React, { useState } from 'react'
 import { Switch, useDarkreader } from 'react-darkreader'
-import { Button, Layout, Menu, Popover, Radio, Row, Col } from 'antd'
+import { Button, Layout, Menu, Popover, Radio, Row, Col, Avatar, Spin, Dropdown, } from 'antd'
 import { Link } from 'react-router-dom'
 import logo from '@/assets/image/common/logo.png'
 import logo_light from '@/assets/image/common/logo_light.png'
-import LoginModal from '../login/login.component'
 import { useHistory } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/store'
+import { LogoutOutlined, PoweroffOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
+import { HOME } from '@/router/constants'
+import LoginModal from '@/components/auth/login/login.component'
 
 const Header: React.FC = () => {
-  const [useLoginModal, setLoginModal] = useState(false)
-  const dispatch = useDispatch()
-  const [isDark, { toggle }] = useDarkreader(false)
-  const history = useHistory()
   const { Header } = Layout
-  // const { isDark } = useSelector((state: RootState) => state.system)
+  const history = useHistory()
+  const [isDark, { toggle }] = useDarkreader(false)
+  const [useLoginModal, setLoginModal] = useState<boolean>(false)
+  const [avatarVisitility, setAvatarVisitility] = useState<boolean>(false)
+
+  const popoverList = [
+    { name: "个人中心", path: HOME.BLOG_DETAIL.path },
+    { name: "我点赞的", path: HOME.INDEX.path },
+    { name: "我收藏的", path: HOME.ABOUT.path },
+  ] as { name: string, path: string }[]
+
+
 
   // 修改主题
   const changeTheme = () => {
@@ -62,19 +71,33 @@ const Header: React.FC = () => {
     )
   }
 
+  const PopoverContent =
+    (
+      <div className={styles.popoverContent}>
+        {popoverList.map(el => (
+          <Link to={el.path} key={el.name} className="link">
+            <div>{el.name}</div>
+          </Link>
+        ))}
+        <PoweroffOutlined style={{ fontSize: '14px', marginRight: '5px' }} />
+        退出
+      </div>
+    )
+
+
   return (
-    <div className="main-header-box">
-      <Header className="header">
+    <div className={styles.mainHeaderBox}>
+      <Header className={styles.header}>
         <Link to="/">
           <div
-            className="logo"
+            className={styles.logo}
             style={{
               backgroundImage: isDark ? `url(${logo})` : `url(${logo_light})`,
             }}
           />
         </Link>
         <div style={{ flex: 1 }}></div>
-        <div className="btn-group">
+        <div className="">
           {/* 主题面板 */}
           {/* <Popover content={themePanel}>
             <svg style={{ width: 16, height: 16, marginTop: 2 }}>
@@ -84,7 +107,7 @@ const Header: React.FC = () => {
           <Switch checked={isDark} onChange={changeTheme} styling="github" />
         </div>
         <Col xs={0} sm={0} md={0} lg={6}>
-          <Menu className="nav" mode="horizontal" defaultSelectedKeys={[history.location.pathname]}>
+          <Menu className={styles.nav} mode="horizontal" defaultSelectedKeys={[history.location.pathname]}>
             <Menu.Item key="/">
               <Link to="/">首页</Link>
             </Menu.Item>
@@ -96,12 +119,46 @@ const Header: React.FC = () => {
             </Menu.Item>
           </Menu>
         </Col>
-        <Button
-          onClick={() => setLoginModal(true)}
-          style={{ marginLeft: 20 }}
-        >
-          登陆
-        </Button>
+        <div className={styles.user}>
+          <Spin
+            spinning={false}
+            size="small">
+            <Dropdown
+              placement="bottomRight"
+              overlay={
+                <Menu>
+                  <Menu.Item
+                    icon={<SettingOutlined />}
+                    key="profile"
+                  // onClick={redriectToProfileRoute}
+                  >
+                    系统设置
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item
+                    icon={<LogoutOutlined />}
+                    // onClick={logout}
+                    key="logout"
+                    danger
+                  >
+                    退出登录
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              <div className={styles.content}>
+                <span>測試名字</span>
+                <Avatar
+                  shape="square"
+                  size="small"
+                  icon={<UserOutlined />}
+                  className={styles.gravatar}
+                // src={admin.data.gravatar}
+                />
+              </div>
+            </Dropdown>
+          </Spin>
+        </div>
       </Header>
       <LoginModal showLogin={useLoginModal} closeLogin={() => {
         console.log("触发")

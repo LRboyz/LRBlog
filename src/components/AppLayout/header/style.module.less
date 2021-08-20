@@ -1,4 +1,4 @@
-.main-header-box {
+.mainHeaderBox {
   position: relative;
   height: 64px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
@@ -38,19 +38,29 @@
       background-size: cover;
     }
 
-    .btn-group {
-      display: flex;
-      align-items: center;
-      margin-right: 20px;
+    .user {
+       margin-right: 1.6rem;
+       display: flex;
+       justify-content: center;
+       align-items: center;
 
-      .themeIcon {
-        display: flex;
-        padding: 8px;
-        margin-right: 20px;
-        color: white;
-      }
+       .content {
+         display: flex;
+         align-items: center;
+         cursor: pointer;
+
+         .gravatar {
+           margin-left: 10px;
+         }
+       }
+     }
+
+    .popoverContent {
+      width: 120px;
+      // background-color: red;
     }
   }
+  
 
   .iconfont {
     margin: 2px 5px 0 0;

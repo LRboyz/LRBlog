@@ -19,19 +19,15 @@ const historySlice = createSlice({
   },
   reducers: {
     setInitialHistoryState: (state) => {
-      const initState = Cookies.getJSON('history') || {}
-      return {
-        ...state,
-        articles: initState.articles || [],
-        comments: initState.comments || [],
-      }
     },
     handleLikeArticle: (state, action) => {
-      console.log('执行了Redux里面的方法，参数是:', action)
       state.articles.push(action.payload)
-      Cookies.set('history', { ...state })
+      Cookies.set('history', { ...state.articles })
     },
-    handleLikeComment: (state) => { },
+    handleLikeComment: (state, action) => {
+      state.comments.push(action.payload)
+      Cookies.set('comments', { ...state.comments })
+    },
   },
 })
 

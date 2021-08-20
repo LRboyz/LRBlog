@@ -83,4 +83,4 @@ const HotArticleList: React.FC = () => {
   )
 }
 
-export default React.memo(HotArticleList)
+export default HotArticleList
