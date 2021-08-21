@@ -2,10 +2,9 @@ import React from 'react'
 import qs from 'query-string'
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
+import CONFIG from '@/config'
+import { HOME } from '@/router/constants'
 // import { StoreState } from '@/store/index'
-import CONFIG from '../../config'
-import { HOME } from '../../router/constants'
-import { IRouteProps } from '../../router/types'
 
 
 // type Props = IRouteProps & ReturnType<typeof mapStateToProps>

@@ -3,7 +3,8 @@ import routesMap from './routes'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import { DispatchProp, connect } from 'react-redux'
 import CONFIG from '../config'
-import { PrivateRouteComponent } from '../components/private-route'
+import PrivateRouteComponent from '@/components/auth/private-route'
+// import { PrivateRouteComponent } from '../components/private-route'
 
 // import { validateLocalStatus } from '@/store/actions/user'
 

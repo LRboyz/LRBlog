@@ -153,7 +153,7 @@ const comment: React.FC<Props> = ({ article_id }) => {
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <Tooltip key="comment-basic-like" title="赞" >
-              <div onClick={like} className="likes">
+              <div onClick={like} className={styles.likes}>
                 <svg className={styles.icon}>
                   <use xlinkHref="#icon-dianzan-copy-copy" />
                 </svg>

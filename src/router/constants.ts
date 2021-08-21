@@ -3,15 +3,15 @@
 export const HOME = {
   // LOGIN: { name: '登录', path: ['/', '/login'] },
 
-  INDEX: { name: "LRboy的个人网站", path: "/" },
+  INDEX: { name: 'LRboy的个人网站', path: '/' },
 
-  ABOUT: { name: "关于我", path: "/about" },
+  ABOUT: { name: '关于我', path: '/about' },
 
-  BLOG: { name: "博客文章", path: "/blog" },
+  BLOG: { name: '博客文章', path: '/blog' },
 
-  BLOG_CATEGORY: { name: "分类文章", path: "/category/:id" },
+  BLOG_CATEGORY: { name: '分类文章', path: '/category/:id' },
 
-  BLOG_DETAIL: { name: "文章详情", path: "/blog/:article_id" },
+  BLOG_DETAIL: { name: '文章详情', path: '/blog/:article_id' },
 
   // HOME_INDEX: { name: '后台首页', path: '/home/index' },
 
@@ -34,5 +34,5 @@ export const HOME = {
 
   // TODO_LIST: { name: '活动清单', path: '/home/todoList' },
 
-  NO_MATCH: { name: "404 Not Found", path: "*" },
-};
+  NO_MATCH: { name: '404 Not Found', path: '*' },
+}
