@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import './less/list.less'
+import styles from './less/list.module.less'
 import { Card, Tabs, List, Space, Button, Skeleton } from 'antd'
 import {
   CommentOutlined,
@@ -97,7 +97,7 @@ const ArticleList: React.FC = () => {
   const renderArticleList = () => {
     const IconText = ({ icon, text }: any) => (
       <Space>
-        <span className="desc">{React.createElement(icon)}</span>
+        <span className={styles.desc}>{React.createElement(icon)}</span>
         {text}
       </Space>
     )
@@ -142,7 +142,7 @@ const ArticleList: React.FC = () => {
         dataSource={list}
         renderItem={(item: articleType) => (
           <div
-            className="article-item"
+            className={styles.articleItem}
             style={{ marginBottom: 10 }}
             onClick={() => toArticleDetail(item._id)}
           >
@@ -155,7 +155,7 @@ const ArticleList: React.FC = () => {
                 actions={[
                   <IconText
                     icon={HistoryOutlined}
-                    text={<span className="desc">{formatTime(item._createTime)}</span>}
+                    text={<span className={styles.thumb}>{formatTime(item._createTime)}</span>}
                     key="list-vertical-message"
                   />,
                   <IconText
@@ -174,11 +174,11 @@ const ArticleList: React.FC = () => {
                     key="list-vertical-like-o"
                   />,
                 ]}
-                extra={<img width={180} alt="logo" src={item.thumb} className="thumb" />}
+                extra={<img width={180} alt="logo" src={item.thumb} className={styles.thumb} />}
               >
                 <List.Item.Meta
                   title={
-                    <div className="title">
+                    <div className={styles.title}>
                       <span style={{ color: 'black' }}>{item.title}</span>
                     </div>
                   }
@@ -200,7 +200,7 @@ const ArticleList: React.FC = () => {
     )
   }
   return (
-    <Card className="article-container">
+    <Card className={styles.articleWrapper}>
       {/* 文章内容区域 */}
       <Tabs defaultActiveKey="0" onChange={changeTabs}>
         <TabPane tab={<span>綜合</span>} key="blend" />

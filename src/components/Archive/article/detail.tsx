@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Viewer, Editor, } from '@bytemd/react'
 import { getProcessor } from 'bytemd'
 import { useRequest } from 'ahooks'
-import './less/detail.less'
+import styles from './less/detail.module.less'
 import { getArticleDetail } from '@/services/api/article'
 import { useRouteMatch } from 'react-router-dom'
 import frontmatter from '@bytemd/plugin-frontmatter'
@@ -93,19 +93,19 @@ const articleDetail: React.FC = () => {
   }
 
   return (
-    <div className="detail-container">
+    <div className={styles.detailWrapper}>
       <div style={{ display: 'flex' }}>
         <Col xs={24} sm={24} md={24} lg={17}>
-          <div className="detail-box">
+          <div className={styles.detailBox}>
             {loading ? (
               <Skeleton active />
             ) : (
               <>
-                <div className="description">原创</div>
+                <div className={styles.description}>原创</div>
                 <Viewer value={data?.data.content!} plugins={plugins}></Viewer>
                 <Divider />
-                <div className="meta">
-                  <div className="meta-item">
+                <div className={styles.meta}>
+                  <div className={styles.metaItem}>
                     <span>文章分类:</span>
                     {data?.data.article_category
                       ? data?.data.article_category.map((category) => {
@@ -117,7 +117,7 @@ const articleDetail: React.FC = () => {
                       })
                       : null}
                   </div>
-                  <div className="meta-item">
+                  <div className={styles.metaItem}>
                     <span>文章标签:</span>
                     {data?.data.article_tag
                       ? data?.data.article_tag.map((tag) => {
@@ -143,56 +143,25 @@ const articleDetail: React.FC = () => {
               <div>
                 <h3 style={{ margin: '0 0 20px 20px' }}>文章目录</h3>
                 {renderAnchor()}
-                <ul className="panel">
+                <ul className={styles.panel}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <li className="panel-item zan" >
-                      <svg className="icon">
-                        <use xlinkHref="#icon-yanjingliulankeshi-copy" />
-                      </svg>
-                    </li>
-                    <span style={{ marginLeft: 10, color: '#777777' }}>
-                      当前已被围观
-                      <strong className="black">{data?.data.article_view}</strong>次
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <li className="panel-item zan" onClick={handleLike}>
-                      {
-                        liked ? <svg className="zan icon">
-                          <use xlinkHref="#icon-dianzan" />
-                        </svg> : <svg className="zan icon">
-                          <use xlinkHref="#icon-dianzan-copy-copy" />
-                        </svg>
-                      }
-                      {/* <svg className={liked ? 'active icon' : 'zan'}>
-                        <use xlinkHref="#icon-dianzan-copy-copy" />
-                      </svg> */}
-                      {/* <LikeOutlined className={liked ? 'active zan' : 'zan'} /> */}
-                    </li>
-                    <span style={{ marginLeft: 10, color: '#777777' }}>
-                      当前已获得
-                      <strong className={liked ? 'primary' : 'black'}>{likesNum}</strong>
-                      人点赞
-                    </span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <li className="panel-item">
-                      <svg className="icon">
+                    <li className={styles.panelItem}>
+                      <svg className={styles.icon}>
                         <use xlinkHref="#icon-pinglun-copy" />
                       </svg>
                     </li>
                     <span style={{ marginLeft: 10, color: '#777777' }}>
-                      当前共&nbsp;<strong className="black">0</strong> 条评论
+                      当前共&nbsp;<strong className="black">12</strong> 条评论
                     </span>
                   </div>
-                  <li className="panel-item">
+                  <li className={styles.panelItem}>
                     <GithubFilled className="icon" />
                   </li>
-                  <li className="panel-item">
+                  <li className={styles.panelItem}>
                     <WechatFilled className="icon" style={{ color: 'green' }} />
                   </li>
-                  <li className="panel-item">
-                    <svg className="icon">
+                  <li className={styles.panelItem}>
+                    <svg className={styles.icon}>
                       <use xlinkHref="#icon-juejin" />
                     </svg>
                   </li>

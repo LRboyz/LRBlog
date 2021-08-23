@@ -20,8 +20,8 @@ function LoginModal(props: Props) {
   const { showLogin } = props
   const dispatch = useDispatch()
   const [toggle, toggleForm] = useState(true)
-  const [form] = Form.useForm();
-  const { data } = useRequest(async () => await getAvatarGroup())
+  const [form] = Form.useForm()
+
 
   const submitRegisterForm = async (value: any, form: any) => {
     try {
@@ -49,7 +49,7 @@ function LoginModal(props: Props) {
         const { data } = await queryUserInfo(value)
         dispatch(setUserInfo(data[0]))
         message.success("登陆成功！")
-        form.login.resetFields();
+        form.login.resetFields()
         props.closeLogin()
       } else {
         message.error("登陆失败！")
@@ -122,17 +122,6 @@ function LoginModal(props: Props) {
           rules={[{ required: true, message: '请填写你的职业!' }]}
         >
           <Input size="large" prefix={<ContactsOutlined />} placeholder="前端工程师/后端工程师/架构师/游客" />
-        </Form.Item>
-        <Form.Item name="user_avatar" label="默认头像">
-          <Radio.Group>
-            {
-              data!.data.map(item => (
-                <Radio value={item.avatar_image} key={Math.random()} style={{ marginBottom: 10 }}>
-                  <Avatar src={item.avatar_image} alt={item.avatar_name}></Avatar>
-                </Radio>
-              ))
-            }
-          </Radio.Group>
         </Form.Item>
         <div>
           <span>

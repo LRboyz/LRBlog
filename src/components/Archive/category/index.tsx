@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { Avatar, Empty, Skeleton } from "antd"
 import { RightCircleTwoTone } from "@ant-design/icons"
-import "./style.less"
+import styles from "./style.module.less"
 import { useRequest } from "ahooks"
 import { getCategoryList } from "@/services/api/catetgory"
 import { useHistory, useRouteMatch } from "react-router-dom"
@@ -21,8 +21,8 @@ const CategoryList: React.FC = () => {
 
   }
   return (
-    <div className="category-container">
-      <ul className="category-list">
+    <div className={styles.categoryWrapper}>
+      <ul className={styles.categoryList}>
         {data?.data.map((item, index) => {
           return (
             <li
@@ -43,7 +43,6 @@ const CategoryList: React.FC = () => {
               return (
                 <Skeleton
                   key={key}
-                  className="mb-sm"
                   loading={loading}
                   active
                   avatar={{ size: "small", shape: "square" }}
