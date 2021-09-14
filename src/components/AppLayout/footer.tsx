@@ -1,6 +1,5 @@
 import styles from "./style.module.less"
 import React from "react"
-import { Layout } from "antd"
 import reactIcon from "@/assets/image/public/react_ts.svg"
 import dockerIcon from "@/assets/image/public/docker.svg"
 import reduxIcon from "@/assets/image/public/redux-action.svg"
@@ -9,10 +8,9 @@ import antIcon from "@/assets/image/public/ant-design.svg"
 // import viteIcon from "../../../favicon.svg"
 import tencentIcon from '@/assets/image/public/tencent_yun.svg'
 
-const footer: React.FC = () => {
-  const { Footer } = Layout
+const AppFooter: React.FC = () => {
   return (
-    <Footer
+    <div
       className={styles.footer}
       style={{ textAlign: "center", fontSize: "12px", color: "#000000a6" }}
     >
@@ -27,8 +25,8 @@ const footer: React.FC = () => {
         <img src={flaskIcon} alt="mongodb" />
         {/* <img src={viteIcon} alt="vite" /> &nbsp */}
       </div>
-    </Footer>
+    </div>
   )
 }
 
-export default footer
+export default AppFooter

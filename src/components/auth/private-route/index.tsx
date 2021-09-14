@@ -3,7 +3,7 @@ import qs from 'query-string'
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import { connect } from 'react-redux'
 import CONFIG from '@/config'
-import { HOME } from '@/router/constants'
+import { RouteConfig } from '@/router/constants'
 // import { StoreState } from '@/store/index'
 
 
@@ -38,9 +38,9 @@ const PrivateRoute: React.FC<any> = function ({
     return true
   }()
 
-  if (meta?.isLoginToHome && isLogin) {
+  if (meta?.isLoginToRouteConfig && isLogin) {
     const redirectUrl = qs.parse(location.search).redirectUrl as string
-    const url = redirectUrl || (HOME.INDEX.path + location.search)
+    const url = redirectUrl || (RouteConfig.INDEX.path + location.search)
     return <Redirect to={url} />
   }
 

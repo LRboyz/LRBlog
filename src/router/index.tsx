@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import routesMap from './routes'
-import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { RouteConfig } from './constants'
+import About from '@/page/about'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { DispatchProp, connect } from 'react-redux'
 import CONFIG from '../config'
 import PrivateRouteComponent from '@/components/auth/private-route'
@@ -15,13 +17,11 @@ const Routes: React.FC<DispatchProp> = function ({ dispatch }) {
   // }, [])
 
   return (
-    <Router basename={CONFIG.baseURL}>
-      <Switch>
-        {routesMap.map((route, idx) => (
-          <PrivateRouteComponent {...route} key={idx} />
-        ))}
-      </Switch>
-    </Router>
+    <Switch>
+      {routesMap.map((route, idx) => (
+        <PrivateRouteComponent {...route} key={idx} />
+      ))}
+    </Switch>
   )
 }
 

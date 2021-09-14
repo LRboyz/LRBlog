@@ -32,7 +32,7 @@ const ArticleList: React.FC = () => {
   const dispatch = useDispatch()
   const { pathname } = useLocation()
   // const [next, setNext] = useState<boolean>(true)
-  const match = useRouteMatch<any>('/category/:id')
+  const match = useRouteMatch<any>('/blog/:id')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [btnLoading, setBtnLoading] = useState<boolean>(false)
   const { isLoading, list, total } = useSelector((state: RootState) => state.article)
@@ -102,7 +102,7 @@ const ArticleList: React.FC = () => {
       </Space>
     )
     const toArticleDetail = (key: string) => {
-      history.push(`/blog/${key}`)
+      history.push(`/blog/detail/${key}`)
     }
 
     const loadMore = !isLoading ? (

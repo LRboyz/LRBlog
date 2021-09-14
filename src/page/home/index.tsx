@@ -1,3 +1,4 @@
+import AppLayout from '@/components/AppLayout'
 import HotArticleList from '@/components/Archive/article/hotArticle'
 import ArticleList from '@/components/Archive/article/list'
 import CategoryList from '@/components/Archive/category'
@@ -12,7 +13,9 @@ const Home: React.FC = () => {
         <CategoryList />
       </Col>
       <Col xs={24} sm={24} md={18} lg={14}>
-        <ArticleList />
+        <div style={{ margin: '0 10px' }}>
+          <ArticleList />
+        </div>
       </Col>
       <Col xs={0} sm={0} md={6} lg={6}>
         <HotArticleList />
@@ -20,8 +23,8 @@ const Home: React.FC = () => {
         <TagList />
       </Col>
     </Row>
+
   )
 }
-// {/* { React.Children.map(props.children, (child) => child) } */ }
 
 export default Home

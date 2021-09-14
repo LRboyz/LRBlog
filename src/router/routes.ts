@@ -1,54 +1,60 @@
-import { HOME } from './constants'
+import { RouteConfig } from './constants'
 import { IRouteProps } from './types'
-import Index from '@/page/index/index'
-import About from '@/page/about/index'
-import ArticleDetail from '@/components/Archive/article/detail'
 import Home from '@/page/home'
+import ArticleDetail from '@/components/Archive/article/detail'
+import About from '@/page/about'
+
 
 const routesMap: IRouteProps[] = [
   {
-    path: HOME.INDEX.path,
-    component: Index,
+    path: RouteConfig.INDEX.path,
+    component: About,
+    exact: true,
     meta: {
       // 当前页面是否需要登录状态
       requiresAuth: false,
       // 网页标题
-      title: HOME.INDEX.name,
+      title: RouteConfig.INDEX.name,
     },
-    childrenRoutes: [
+  },
+  {
+    path: RouteConfig.BLOG.path,
+    component: Home,
+    meta: {
+      // 当前页面是否需要登录状态
+      requiresAuth: false,
+      // 网页标题
+      title: RouteConfig.BLOG_DETAIL.name,
+    },
+    childrenRouteConfig: [
       {
-        path: HOME.INDEX.path,
+        path: RouteConfig.BLOG_CATEGORY.path,
         component: Home,
         exact: true,
         meta: {
-          title: HOME.INDEX.name,
+          title: RouteConfig.BLOG_CATEGORY.name,
         },
       },
-      {
-        path: HOME.BLOG_CATEGORY.path,
-        component: Home,
-        exact: true,
-        meta: {
-          title: HOME.BLOG_CATEGORY.name,
-        },
-      },
-      {
-        path: HOME.BLOG_DETAIL.path,
-        component: ArticleDetail,
-        exact: true,
-        meta: {
-          title: HOME.BLOG_DETAIL.name,
-        },
-      },
-      {
-        path: HOME.ABOUT.path,
-        component: About,
-        exact: true,
-        meta: {
-          title: HOME.ABOUT.name,
-        },
-      },
+      // {
+      //   path: RouteConfig.BLOG_DETAIL.path,
+      //   component: ArticleDetail,
+      //   exact: true,
+      //   meta: {
+      //     title: RouteConfig.BLOG_DETAIL.name,
+      //   },
+      // },
     ],
+  },
+  {
+    path: RouteConfig.BLOG_DETAIL.path,
+    component: ArticleDetail,
+    exact: true,
+    meta: {
+      // 当前页面是否需要登录状态
+      requiresAuth: false,
+      // 网页标题
+      title: RouteConfig.BLOG_DETAIL.name,
+    },
   },
 ]
 

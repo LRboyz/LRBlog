@@ -21,7 +21,7 @@ const TagList: React.FC = () => {
           {data?.data.map((item, index) => {
             return (
               <div
-                className={styles.tagItem && styles.desc}
+                className={styles.tagItem}
                 key={item._id}
                 style={{
                   background: item.tag_color, // '#' + Math.random().toString(16).slice(2, 8),

@@ -2,6 +2,7 @@ import Cookies from "js-cookie"
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { useDarkreader } from 'react-darkreader'
 import { postRegisterForm } from "@/services/api/user"
+import CONFIG from "@/config"
 
 export type userInfoType = {
     username: string
@@ -30,6 +31,11 @@ const systemSlice = createSlice({
         ...initialSystemState
     },
     reducers: {
+        githubAuth: () => {
+            const url =
+                `https://github.com/login/oauth/authorize?response_type=code&redirect_uri=${CONFIG.github.callbackURL}&client_id=${CONFIG.github.clientId}`
+            window.location.replace(url)
+        },
         setUserInfo: (state, action: any) => {
             return {
                 ...state,
@@ -49,4 +55,4 @@ const systemSlice = createSlice({
 
 export default systemSlice
 
-export const { setUserInfo, clearUserInfo } = systemSlice.actions
+export const { setUserInfo, clearUserInfo, githubAuth } = systemSlice.actions

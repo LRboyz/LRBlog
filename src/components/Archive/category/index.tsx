@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Avatar, Empty, Skeleton } from "antd"
 import { RightCircleTwoTone } from "@ant-design/icons"
 import styles from "./style.module.less"
@@ -8,17 +8,15 @@ import { useHistory, useRouteMatch } from "react-router-dom"
 import { categoryType } from "@/types/base"
 
 const CategoryList: React.FC = () => {
-  useEffect(() => { })
-  const [currentIndex, setCurrentIndex] = React.useState<number>()
   const history = useHistory()
-  const match = useRouteMatch<any>("/category/:id")
+  const match = useRouteMatch<any>("/blog/:id")
+  const [key, setKey] = useState<string>('')
   const { data, error, loading } = useRequest(async () => {
     return await getCategoryList()
   })
   const selectCategory = (item: categoryType, index: number) => {
-    setCurrentIndex(index)
-    history.push(`/category/${item._id}`)
-
+    history.push(`/blog/${item._id}`)
+    setKey(key === item._id ? key : item._id)
   }
   return (
     <div className={styles.categoryWrapper}>
@@ -26,7 +24,7 @@ const CategoryList: React.FC = () => {
         {data?.data.map((item, index) => {
           return (
             <li
-              className={`mb-sm ${match?.params.id === item._id ? "active" : ""
+              className={`mb-sm ${match?.params.id === item._id ? styles.active : ""
                 }`}
               key={index}
               onClick={() => selectCategory(item, index)}
