@@ -68,12 +68,6 @@ const PrivateRoute: React.FC<any> = function ({
   )
 }
 
-// const mapStateToProps = (state: any) => {
-//   return {
-//     isLogin: state.user.isLogin
-//   }
-// }
-
 export const PrivateRouteComponent = connect()(PrivateRoute)
 
 export default PrivateRouteComponent

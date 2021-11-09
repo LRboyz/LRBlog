@@ -35,15 +35,18 @@ const routesMap: IRouteProps[] = [
           title: RouteConfig.BLOG_CATEGORY.name,
         },
       },
-      // {
-      //   path: RouteConfig.BLOG_DETAIL.path,
-      //   component: ArticleDetail,
-      //   exact: true,
-      //   meta: {
-      //     title: RouteConfig.BLOG_DETAIL.name,
-      //   },
-      // },
     ],
+  },
+  {
+    path: RouteConfig.ABOUT.path,
+    component: About,
+    exact: true,
+    meta: {
+      // 当前页面是否需要登录状态
+      requiresAuth: false,
+      // 网页标题
+      title: RouteConfig.ABOUT.name,
+    },
   },
   {
     path: RouteConfig.BLOG_DETAIL.path,

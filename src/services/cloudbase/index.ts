@@ -1,4 +1,6 @@
 import cloudbase from '@cloudbase/js-sdk'
+import { message } from 'antd'
+import { reject } from 'lodash'
 
 const app = cloudbase.init({
   env: 'lrblog-0gonx238c9955a8b',
@@ -15,8 +17,9 @@ export const updateArticleView = async (article_id: string) => {
       .update({
         article_view: _.inc(1),
       })
-  } catch (error) {
-    console.error(error)
+  } catch (error: any) {
+    message.error(error.message)
+    throw error
   }
 }
 // 更新文章点赞数
@@ -27,8 +30,9 @@ export const updateArticleZan = async (article_id: string) => {
       .update({
         article_zan: _.inc(1),
       })
-  } catch (error) {
-    console.error(error)
+  } catch (error: any) {
+    message.error(error.message)
+    throw error
   }
 }
 
@@ -36,8 +40,9 @@ export const updateArticleZan = async (article_id: string) => {
 export const queryUserAuth = async (form: { username: string, user_pwd: string }): Promise<any> => {
   try {
     return await db.collection("blog_user").where(form).count()
-  } catch (error) {
-    console.error(error)
+  } catch (error: any) {
+    message.error(error.message)
+    throw error
   }
 }
 
@@ -45,7 +50,8 @@ export const queryUserInfo = async (form: { username: string, user_pwd: string }
   console.log(form, 'LoginForm')
   try {
     return await db.collection("blog_user").where(form).get()
-  } catch (error) {
-    console.error(error)
+  } catch (error: any) {
+    message.error(error.message)
+    throw error
   }
 }

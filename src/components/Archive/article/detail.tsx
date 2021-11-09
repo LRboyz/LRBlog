@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Viewer, Editor, } from '@bytemd/react'
+import { Viewer } from '@bytemd/react'
 import { getProcessor } from 'bytemd'
 import { useRequest } from 'ahooks'
 import styles from './less/detail.module.less'
@@ -9,7 +9,7 @@ import frontmatter from '@bytemd/plugin-frontmatter'
 import 'bytemd/dist/index.min.css'
 import Comment from '../comment'
 import highlight from '@bytemd/plugin-highlight-ssr'
-import { Skeleton, Col, Card, Divider, Tag, Affix, Anchor, message } from 'antd'
+import { Skeleton, Col, Card, Divider, Tag, Affix, Anchor, message, Typography } from 'antd'
 import 'highlight.js/styles/docco.css'
 import { updateArticleView, updateArticleZan } from '@/services/cloudbase'
 import { GithubFilled, LikeOutlined, WechatFilled } from '@ant-design/icons'
@@ -17,15 +17,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { handleLikeArticle } from '@/store/historySlice'
 import { RootState } from '@/store'
 import { Toc } from '@/utils/toc'
+import { generateDiceBearBottts } from '@/utils'
 
 
 const articleDetail: React.FC = () => {
   const plugins = [frontmatter(), highlight()]
   const [liked, setLiked] = useState<boolean>(false)
   const [likesNum, setLikesNum] = useState<number>(0)
-  const match = useRouteMatch<any>('/blog/:article_id')
+  const match = useRouteMatch<any>('/detail/:article_id')
   const dispatch = useDispatch()
-  const { articles, comments } = useSelector((state: RootState) => state.history)
+  const { articles } = useSelector((state: RootState) => state.history)
   useEffect(() => {
     updateArticleView(match?.params.article_id)
   }, [match?.params.article_id])
@@ -43,41 +44,6 @@ const articleDetail: React.FC = () => {
     })
   )
 
-
-  const renderAnchor = () => {
-
-    const { Link } = Anchor
-    let hast: any
-    getProcessor({
-      plugins: [
-        {
-          rehype: (p) =>
-            p.use(() => (tree) => {
-              hast = tree
-            }),
-        },
-      ],
-    }).processSync(data?.data.content!)
-
-    // console.log(Toc(hast))
-    return Toc(hast).map((item: any, key: number) => {
-      // if (item.tagName === 'h2') {
-      return (
-        <Anchor style={{ marginLeft: 20, paddingLeft: (item.level - 1) * 16 + 8 }} key={key} offsetTop={80}>
-
-          <Link
-            key={Math.random()}
-            href={`#user-content-${item.level}`}
-            title={item.text}
-          >
-
-          </Link>
-        </Anchor>
-      )
-      // }
-    })
-  }
-
   const handleLike = async () => {
     if (liked) {
       message.error('您已经点赞过这篇文章了呦 ')
@@ -91,7 +57,7 @@ const articleDetail: React.FC = () => {
 
     // Cookies.set("likeHistory", )
   }
-
+  // console.log(generateDiceBearBottts(Math.random()), "生成隨機頭像")
   return (
     <div className={styles.detailWrapper}>
       <div style={{ display: 'flex' }}>
@@ -101,38 +67,40 @@ const articleDetail: React.FC = () => {
               <Skeleton active />
             ) : (
               <>
-                <div className={styles.description}>原创</div>
-                <Viewer value={data?.data.content!} plugins={plugins}></Viewer>
-                <Divider />
-                <div className={styles.meta}>
-                  <div className={styles.metaItem}>
-                    <span>文章分类:</span>
-                    {data?.data.article_category
-                      ? data?.data.article_category.map((category) => {
-                        return (
-                          <Tag color="geekblue" key={category._id}>
-                            {category.category_name}
-                          </Tag>
-                        )
-                      })
-                      : null}
-                  </div>
-                  <div className={styles.metaItem}>
-                    <span>文章标签:</span>
-                    {data?.data.article_tag
-                      ? data?.data.article_tag.map((tag) => {
-                        return (
-                          <Tag key={tag._id} color={tag.tag_color}>
-                            {tag.tag_name}
-                          </Tag>
-                        )
-                      })
-                      : null}
+                <div className={styles.markdownBody}>
+                  <div className={styles.description}>原创</div>
+                  <Viewer value={data?.data.content!} plugins={plugins}></Viewer>
+                  <Divider />
+                  <div className={styles.meta}>
+                    <div className={styles.metaItem}>
+                      <Typography.Text type={'secondary'}>文章分类: </Typography.Text>
+                      {data?.data.article_category
+                        ? data?.data.article_category.map((category) => {
+                          return (
+                            <Tag color="geekblue" key={category._id}>
+                              {category.category_name}
+                            </Tag>
+                          )
+                        })
+                        : null}
+                    </div>
+                    <div className={styles.metaItem}>
+                      <Typography.Text type={'secondary'}>文章标签: </Typography.Text>
+                      {data?.data.article_tag
+                        ? data?.data.article_tag.map((tag) => {
+                          return (
+                            <Tag key={tag._id} color={tag.tag_color}>
+                              {tag.tag_name}
+                            </Tag>
+                          )
+                        })
+                        : null}
+                    </div>
                   </div>
                 </div>
                 <Divider />
 
-                <Comment article_id={match?.params.article_id} />
+                <Comment article_id={match?.params.article_id} author={data?.data.article_author!} />
               </>
             )}
           </div>
@@ -141,17 +109,25 @@ const articleDetail: React.FC = () => {
           {!loading && (
             <Affix offsetTop={80}>
               <div>
-                <h3 style={{ margin: '0 0 20px 20px' }}>文章目录</h3>
-                {renderAnchor()}
                 <ul className={styles.panel}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <li className={styles.panelItem}>
                       <svg className={styles.icon}>
-                        <use xlinkHref="#icon-pinglun-copy" />
+                        <use xlinkHref="#icon-pinglun1" />
                       </svg>
                     </li>
                     <span style={{ marginLeft: 10, color: '#777777' }}>
-                      当前共&nbsp;<strong className="black">12</strong> 条评论
+                      当前共获得 <strong className="black">{data?.data.comment_count}</strong> 条评论
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <li className={styles.panelItem}>
+                      <svg className={styles.icon}>
+                        <use xlinkHref="#icon-xiai" />
+                      </svg>
+                    </li>
+                    <span style={{ marginLeft: 10, color: '#777777' }}>
+                      当前共获得 <strong className="black">{data?.data.article_zan}</strong> 人喜欢
                     </span>
                   </div>
                   <li className={styles.panelItem}>

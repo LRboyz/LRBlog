@@ -1,8 +1,8 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
-import systemSlice from './systemSlice'
+import { configureStore } from '@reduxjs/toolkit'
+import commentSlice from './commentSlice'
 import articleSlice from './articleSlice'
 import historySlice from './historySlice'
-import {isProduction} from "@/config"
+
 
 // BaseType
 export type RootState = ReturnType<typeof store.getState>
@@ -11,7 +11,7 @@ export type AppDispatch = typeof store.dispatch
 const store = configureStore({
   reducer: {
     article: articleSlice.reducer,
-    system: systemSlice.reducer,
+    comment: commentSlice.reducer,
     history: historySlice.reducer,
   }
 })

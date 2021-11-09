@@ -11,7 +11,7 @@ export const RouteConfig = {
 
   BLOG_CATEGORY: { name: '分类文章', path: '/blog/:id' },
 
-  BLOG_DETAIL: { name: '文章详情', path: '/blog/detail/:article_id' },
+  BLOG_DETAIL: { name: '文章详情', path: '/detail/:article_id' },
 
   NO_MATCH: { name: '404 Not Found', path: '*' },
 }

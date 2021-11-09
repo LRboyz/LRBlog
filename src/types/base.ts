@@ -22,6 +22,11 @@ export type articleType = {
   article_category: categoryType[]
   article_tag: tagType[]
   article_comment: commentType[]
+  article_author?: {
+    avatar: string
+    name: string
+    email: string
+  }
 }
 export type categoryType = {
   _id: string
@@ -45,7 +50,8 @@ export type commentType = {
   comment_author: {
     name: string
     email: string
-    site: string
+    job: string
+    avatar: string
   },
   children: [commentType]
   comment_content: string

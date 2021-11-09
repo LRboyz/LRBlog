@@ -35,6 +35,8 @@ export const arrayToTree = (data: Array<any>) => {
             Array.isArray(parent.children) ? parent.children.push(item) : parent.children = [item]
         }
     })
-    console.log(result, 'result')
     return result
 }
+
+// 生成隨機頭像
+export const generateDiceBearBottts = (seed: any) => `https://avatars.dicebear.com/api/bottts/${seed}.svg`

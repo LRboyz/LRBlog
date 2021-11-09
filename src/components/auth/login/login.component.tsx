@@ -6,7 +6,7 @@ import Avatar from 'antd/lib/avatar/avatar'
 import { useRequest } from 'ahooks'
 import { getAvatarGroup } from '@/services/api/public'
 import { useDispatch } from 'react-redux'
-import { clearUserInfo, setUserInfo } from '@/store/systemSlice'
+import { clearUserInfo, setUserInfo } from '@/store/commentSlice'
 import { postRegisterForm } from '@/services/api/user'
 import { queryUserAuth, queryUserInfo } from '@/services/cloudbase'
 

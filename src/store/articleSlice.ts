@@ -14,7 +14,7 @@ export const articleInitState: articleState = {
   total: 0,
 }
 
- /*********** Async Function  ************/
+/*********** Async Function  ************/
 export const getArticles = createAsyncThunk('article/getArticleList', async (params: any) => {
   const res = await getArticleList(params)
   return res
@@ -85,6 +85,7 @@ const articleSlice = createSlice({
         list: [],
       }
     },
+    /****** ******/
     [getMoreArticles.fulfilled.type](state, action: any) {
       return {
         ...state,

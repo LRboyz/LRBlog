@@ -102,7 +102,7 @@ const ArticleList: React.FC = () => {
       </Space>
     )
     const toArticleDetail = (key: string) => {
-      history.push(`/blog/detail/${key}`)
+      history.push(`/detail/${key}`)
     }
 
     const loadMore = !isLoading ? (
@@ -122,7 +122,7 @@ const ArticleList: React.FC = () => {
             onClick={() => getMoreArticleList()}
             disabled={!next}
           >
-            <span className="tips">
+            <span className={styles.tips}>
               {btnLoading
                 ? '正在玩命加载中.....'
                 : next
@@ -155,7 +155,7 @@ const ArticleList: React.FC = () => {
                 actions={[
                   <IconText
                     icon={HistoryOutlined}
-                    text={<span className={styles.thumb}>{formatTime(item._createTime)}</span>}
+                    text={<span className="desc">{formatTime(item._createTime)}</span>}
                     key="list-vertical-message"
                   />,
                   <IconText
